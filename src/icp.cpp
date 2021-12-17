@@ -1,17 +1,11 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <opencv/cv.h> //Image Processing  and Vision Algorithms
-#include <opencv/cxcore.h> // Basic structures, Matrix Functions, Linear Algebra, drawing functions
-#include <opencv/ml.h> // Statistical Classifiers and Clustering Tools
 #include <opencv2/highgui/highgui.hpp>
+#include <iostream>
 
 using namespace std;
 using namespace cv;
-
-
-
-
 
 
 void ShowPoints(Mat& im, Mat& X,Scalar c = Scalar(255)) {
@@ -23,7 +17,7 @@ void ShowPoints(Mat& im, Mat& X,Scalar c = Scalar(255)) {
             Point2f _p = X.at<Point2f>(i,0);
             p.x = _p.x; p.y = _p.y;
         }
-        circle(im,p,3,c,CV_FILLED);
+        circle(im,p,3,c,cv::FILLED);
     }
 }
 
@@ -38,9 +32,9 @@ void ShowLines(Mat& im, Mat& X, Mat& X_bar, Scalar c1 = Scalar(0,255), Scalar c2
                 Point2f _p = X.at<Point2f>(i,0);
                 p.x = _p.x; p.y = _p.y;
             }
-            circle(im,p,3,c1,CV_FILLED);
+            circle(im,p,3,c1,cv::FILLED);
             Point p1 = X_bar.at<Point>(i,0);
-            circle(im,p1,3,c2,CV_FILLED);
+            circle(im,p1,3,c2,cv::FILLED);
 
             line(im,p,p1,Scalar(0,0,255),2);
 
@@ -160,9 +154,9 @@ void findBestTransform(Mat& X, Mat& X_bar) {
 
     float* sd = (float*)sol.data;
 
-    cout << "solution: ";
-    for(int i=0;i<4;i++) cout << sd[i] << ",";
-    cout << endl;
+    std::cout << "solution: ";
+    for(int i=0;i<4;i++) std::cout << sd[i] << ",";
+    std::cout << std::endl;
 
     //2D Rotation matrix
     float _R[4] = {sd[0],sd[1],-sd[1],sd[0]};
@@ -234,7 +228,7 @@ void ICP(Mat& X, Mat& destination) {
         lastDist = dist;
         X.copyTo(lastGood);
 
-        cout << "distance: " << dist << endl;
+        std::cout << "distance: " << dist << std::endl;
 
         Mat X_bar(X.size(),X.type());
         //vector<Point> X_barv;
@@ -267,7 +261,7 @@ void ICP(Mat& X, Mat& destination) {
         destination = destination.reshape(2);
     }
 
-    cout << "converged" << endl;
+    std::cout << "converged" << std::endl;
 }
 
 int main(int argc, char** argv) {

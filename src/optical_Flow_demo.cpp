@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <cv.h>
-#include <highgui.h>
 #include <math.h>
 #include <opencv2/opencv.hpp>
 static const double pi = 3.14159265358979323846;

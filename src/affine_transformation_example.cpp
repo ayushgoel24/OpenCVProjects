@@ -117,13 +117,13 @@ void GetAffineTransformation(char **argv)
     cv::warpAffine( warp_dst, warp_rotate_dst, rot_mat, warp_dst.size() );
 
     /// Show what you got
-    cv::namedWindow( source_window, CV_WINDOW_AUTOSIZE );
+    cv::namedWindow( source_window, cv::WINDOW_AUTOSIZE );
     cv::imshow( source_window, src );
 
-    cv::namedWindow( warp_window, CV_WINDOW_AUTOSIZE );
+    cv::namedWindow( warp_window, cv::WINDOW_AUTOSIZE );
     cv::imshow( warp_window, warp_dst );
 
-    cv::namedWindow( warp_rotate_window, CV_WINDOW_AUTOSIZE );
+    cv::namedWindow( warp_rotate_window, cv::WINDOW_AUTOSIZE );
     cv::imshow( warp_rotate_window, warp_rotate_dst );
 
     /// Wait until user exits the program

@@ -33,8 +33,8 @@ void Camera()
 {
 
     cv::VideoCapture webCam(0); // open the default camera
-    webCam.set(CV_CAP_PROP_FRAME_WIDTH,640);
-    webCam.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+    webCam.set(cv::CAP_PROP_FRAME_WIDTH,640);
+    webCam.set(cv::CAP_PROP_FRAME_HEIGHT,480);
     std::vector<cv::KeyPoint> key_points;
     if(!webCam.isOpened())  // check if we succeeded
         return;
@@ -48,7 +48,7 @@ void Camera()
 
 
 
-        cv::cvtColor(frame,frame, CV_BGR2GRAY );
+        cv::cvtColor(frame,frame, cv::COLOR_BGR2RGB );
         FASTFeatureDetector(frame,  key_points);
 //        cv::KeyPoint::convert(key_points, points, std::vector<int>());
         cv::drawKeypoints(frame,key_points,frame);

@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
-#include <opencv2/nonfree/nonfree.hpp>
-
+//#include <opencv2/nonfree/nonfree.hpp>
+#include <opencv2/xfeatures2d/nonfree.hpp>
 
 /*
 getPerspectiveTransform ->needs 4 points, based on SVD
@@ -81,8 +81,8 @@ void findHomography_Test(int argc, char** argv)
         return;
     }
 
-    cv::Mat img_object = cv::imread( argv[1], CV_LOAD_IMAGE_GRAYSCALE );
-    cv::Mat img_scene = cv::imread( argv[2], CV_LOAD_IMAGE_GRAYSCALE );
+    cv::Mat img_object = cv::imread( argv[1], cv::IMREAD_GRAYSCALE );
+    cv::Mat img_scene = cv::imread( argv[2], cv::IMREAD_GRAYSCALE);
 
     if( !img_object.data || !img_scene.data )
     {

@@ -42,16 +42,16 @@ void estimatFundamentalMatrix()
     left_image=cv::imread(left_image_path);
     right_image=cv::imread(right_image_path);
 
-    cv::findChessboardCorners(right_image, board_sz, corners_right, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
-    cv::findChessboardCorners(left_image, board_sz, corners_left, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
+    cv::findChessboardCorners(right_image, board_sz, corners_right, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FILTER_QUADS);
+    cv::findChessboardCorners(left_image, board_sz, corners_left, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FILTER_QUADS);
 
 
 
     cv::cvtColor(left_image,left_image_gray,cv::COLOR_RGB2GRAY);
     cv::cvtColor(right_image,right_image_gray,cv::COLOR_RGB2GRAY);
 
-    cv::cornerSubPix(left_image_gray,corners_left, cv::Size(11, 11), cv::Size(-1, -1), cv::TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
-    cv::cornerSubPix(right_image_gray,corners_right, cv::Size(11, 11), cv::Size(-1, -1), cv::TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
+    cv::cornerSubPix(left_image_gray,corners_left, cv::Size(11, 11), cv::Size(-1, -1), cv::TermCriteria(cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS, 30, 0.1));
+    cv::cornerSubPix(right_image_gray,corners_right, cv::Size(11, 11), cv::Size(-1, -1), cv::TermCriteria(cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS, 30, 0.1));
 
     std::vector< cv::DMatch > good_matches;
     for(std::size_t i=0;i<corners_right.size();i++)
@@ -89,10 +89,10 @@ void estimatFundamentalMatrix()
     cv::imwrite("matches.jpg",img_matches);
 
     cv::imshow("matches",img_matches);
-    cvWaitKey(0);
+    cv::waitKey(0);
 
 
-    cv::Mat F= cv::findFundamentalMat(corners_left, corners_right, CV_FM_7POINT);
+    cv::Mat F= cv::findFundamentalMat(corners_left, corners_right, cv::FM_7POINT);
     std::cout<<F <<std::endl;
 
 
@@ -138,9 +138,9 @@ void estimatFundamentalMatrix()
 
 
         //cv::line(right_image, cvPoint(x0,y0), cvPoint(right_image.cols,right_image.rows), cvScalar(0,255,0), 1);
-        cv::line(right_image, cvPoint(x0,y0), cvPoint(x1,y1), cvScalar(0,255,0), 1);
+        cv::line(right_image, cv::Point(x0,y0), cv::Point(x1,y1), cv::Scalar(0,255,0), 1);
         cv::imshow("right_image_epipolarline",right_image);
-        cvWaitKey(0);
+        cv::waitKey(0);
     }
 
 

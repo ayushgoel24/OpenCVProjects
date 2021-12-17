@@ -1,13 +1,14 @@
 #define CERES_FOUND 
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/features2d.hpp>
-#include <opencv2/xfeatures2d.hpp>
-#include <opencv2/xfeatures2d/nonfree.hpp>
 #include <opencv2/core/cvstd.hpp>
 #include <opencv2/opencv.hpp>
 #include <unistd.h>
 #include <algorithm>
-#include <opencv2/sfm.hpp>
+
+//#include <opencv2/xfeatures2d.hpp>
+//#include <opencv2/xfeatures2d/nonfree.hpp>
+//#include <opencv2/sfm.hpp>
 
 #include <Eigen/Geometry>
 
@@ -82,10 +83,10 @@ int dumb(int argc, char ** argv)
 
         unsigned int microseconds=1000000;
         cv::VideoCapture webCam(0); // open the default camera
-        webCam.set(CV_CAP_PROP_FRAME_WIDTH,640);
-        webCam.set(CV_CAP_PROP_FRAME_HEIGHT,480);
-        webCam.set(CV_CAP_PROP_FPS, 1);
-        webCam.set(CV_CAP_PROP_MODE, CV_CAP_MODE_YUYV);
+        webCam.set(cv::CAP_PROP_FRAME_WIDTH,640);
+        webCam.set(cv::CAP_PROP_FRAME_HEIGHT,480);
+        webCam.set(cv::CAP_PROP_FPS, 1);
+        //webCam.set(cv::CAP_PROP_MODE, CV_CAP_MODE_YUYV);
 
 
 

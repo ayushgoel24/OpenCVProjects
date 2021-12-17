@@ -1,151 +1,160 @@
-cmake_minimum_required(VERSION 2.8)
-PROJECT( opencvdemo )
+cmake_minimum_required(VERSION 3.1 )
+project( OpenCVProjects )
 set(CMAKE_BUILD_TYPE Debug)
 
 
-set(Ceres_DIR  "$ENV{HOME}/usr/lib/cmake/Ceres")
-find_package (Ceres REQUIRED)
-MESSAGE("Ceres_VERSION: " ${Ceres_VERSION})
-MESSAGE("CERES_INCLUDE_DIRS: " ${CERES_INCLUDE_DIRS})
-MESSAGE("CERES_LIBRARIES: " ${CERES_LIBRARIES})
+
+message("\n########################################## Ceres ##########################################\n")
+
+if(EXISTS "$ENV{HOME}/usr/lib/cmake/Ceres")
+	set(Ceres_DIR  "$ENV{HOME}/usr/lib/cmake/Ceres")	
+endif()
 
 
-#FIND_PACKAGE(Eigen REQUIRED)
-find_package (Eigen3 REQUIRED)
-include_directories(${EIGEN3_INCLUDE_DIR})
+find_package (Ceres QUIET)
+if(${CERES_FOUND})
+	message("Ceres_VERSION: " ${Ceres_VERSION})
+	message("CERES_INCLUDE_DIRS: " ${CERES_INCLUDE_DIRS})
+	message("CERES_LIBRARIES: " ${CERES_LIBRARIES})
+	add_executable(bundle_adjuster_example1 src/bundle_adjuster_example1.cpp)
+	target_link_libraries(bundle_adjuster_example1  ${OpenCV_LIBS}  ${CERES_LIBRARIES})
+
+	add_executable(bundle_adjuster_example2 src/bundle_adjuster_example2.cpp src/bal_problem.cpp)
+	target_link_libraries(bundle_adjuster_example2  ${OpenCV_LIBS}  ${CERES_LIBRARIES} gflags)
+else()  	
+	message("Ceres not found")
+endif()	
 
 
-#If opencv is installed in custom directory
-#set(OpenCV_DIR "$ENV{HOME}/usr/share/OpenCV/")
-
-FIND_PACKAGE( OpenCV REQUIRED )
-
-MESSAGE("OpenCV_DIR: " ${OpenCV_DIR})
-MESSAGE("OpenCV_VERSION: " ${OpenCV_VERSION})
-MESSAGE("OpenCV_INCLUDE_DIRS: " ${OpenCV_INCLUDE_DIRS})
-MESSAGE("OpenCV_LIBS: " ${OpenCV_LIBS} )
-
-set(gflags_DIR "$ENV{HOME}/usr/lib/cmake/gflags/")
-
-find_package(gflags REQUIRED)
-#find_package(gflags COMPONENTS nothreads_static)
-MESSAGE("GFLAGS_FOUND: " ${GFLAGS_FOUND})
-MESSAGE("GFLAGS_INCLUDE_DIRS: " ${GFLAGS_INCLUDE_DIRS})
-MESSAGE("GFLAGS_LIBRARIES: " ${GFLAGS_LIBRARIES})
-MESSAGE("GFLAGS_LIBRARYRARY_DIRS: " ${GFLAGS_LIBRARYRARY_DIRS} )
-add_definitions(-DCERES_GFLAGS_NAMESPACE=${GFLAGS_NAMESPACE})
+message("\n########################################## Eigen ##########################################\n")
 
 
-
-
-FIND_PACKAGE(Boost COMPONENTS system filesystem program_options REQUIRED)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-LINK_DIRECTORIES(${Boost_LIBRARY_DIR})
-
-#This will print all unsed variable, etc
-ADD_DEFINITIONS (-g -Wall -fopenmp)
+find_package (Eigen3 QUIET)
+if(${EIGEN3_FOUND})
+	include_directories(${EIGEN3_INCLUDE_DIR})
+	message("EIGEN3_VERSION: " ${EIGEN3_VERSION})
+	message("EIGEN3_INCLUDE_DIR: " ${EIGEN3_INCLUDE_DIR})
+else()  	
+	message("Eigen not found")
+endif()
 
 
 
-# Check for c++11 support
-INCLUDE(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-IF(COMPILER_SUPPORTS_CXX11)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ELSEIF(COMPILER_SUPPORTS_CXX0X)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-ELSE()
-  MESSAGE(ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-ENDIF()
+message("\n########################################## gflag ##########################################\n")
 
-
-#ADD_EXECUTABLE(tracking_objects_by_color src/tracking_objects_by_color.cpp)
-#TARGET_LINK_LIBRARIES(tracking_objects_by_color ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(BasicOperations src/BasicOperations.cpp)
-#TARGET_LINK_LIBRARIES(BasicOperations ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(homography_example src/homography_example.cpp)
-#TARGET_LINK_LIBRARIES(homography_example ${OpenCV_LIBS} )
-
-
-#ADD_EXECUTABLE(stereo_calibration_example src/stereo_calibration_example.cpp)
-#TARGET_LINK_LIBRARIES(stereo_calibration_example ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(stereo_block_matching src/stereo_block_matching.cpp)
-#TARGET_LINK_LIBRARIES(stereo_block_matching ${OpenCV_LIBS} )
-
-
-ADD_EXECUTABLE(affine_transformation_example src/affine_transformation_example.cpp)
-TARGET_LINK_LIBRARIES(affine_transformation_example ${OpenCV_LIBS} )
-
-ADD_EXECUTABLE(perspective-n-point src/perspective-n-point.cpp)
-TARGET_LINK_LIBRARIES(perspective-n-point ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(camera_calibration_example src/camera_calibration_example.cpp)
-#TARGET_LINK_LIBRARIES(camera_calibration_example ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(stereo_rectify_uncalibrated src/stereo_rectify_uncalibrated.cpp)
-#TARGET_LINK_LIBRARIES(stereo_rectify_uncalibrated ${OpenCV_LIBS} )
-
-
-ADD_EXECUTABLE(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
-TARGET_LINK_LIBRARIES(fundamental_matrix_estimation ${OpenCV_LIBS} )
-
-
-ADD_EXECUTABLE(optical_flow src/optical_flow.cpp)
-TARGET_LINK_LIBRARIES(optical_flow ${OpenCV_LIBS} )
+if(EXISTS "$ENV{HOME}/usr/lib/cmake/gflags/")
+	set(gflags_DIR "$ENV{HOME}/usr/lib/cmake/gflags/")	
+endif()
+find_package(gflags QUIET)
+if(${GFLAGS_FOUND})
+	message("GFLAGS_FOUND: " ${GFLAGS_FOUND})
+	message("GFLAGS_INCLUDE_DIRS: " ${GFLAGS_INCLUDE_DIRS})
+	message("GFLAGS_LIBRARIES: " ${GFLAGS_LIBRARIES})
+	message("GFLAGS_LIBRARYRARY_DIRS: " ${GFLAGS_LIBRARYRARY_DIRS} )
+	add_definitions(-DCERES_GFLAGS_NAMESPACE=${GFLAGS_NAMESPACE})
+else()
+	message("gflags not found")
+endif()
 
 
 
-#ADD_EXECUTABLE(visual_odometry src/visual_odometry.cpp)
-#TARGET_LINK_LIBRARIES(visual_odometry ${OpenCV_LIBS} )
+message("\n########################################## OpenCV ##########################################\n")
 
-#ADD_EXECUTABLE(lkdemo src/lkdemo.cpp)
-#TARGET_LINK_LIBRARIES(lkdemo ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(pyrlk_optical_flow src/pyrlk_optical_flow.cpp)
-#TARGET_LINK_LIBRARIES(pyrlk_optical_flow ${OpenCV_LIBS} )
-
-
-#ADD_EXECUTABLE(fback src/fback.cpp)
-#TARGET_LINK_LIBRARIES(fback ${OpenCV_LIBS} )
-
-
-#ADD_EXECUTABLE(flow_video src/flow_video.cpp)
-#TARGET_LINK_LIBRARIES(flow_video ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(optical_Flow_demo src/optical_Flow_demo.cpp)
-#TARGET_LINK_LIBRARIES(optical_Flow_demo ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(sfm_example src/sfm_example.cpp)
-#TARGET_LINK_LIBRARIES(sfm_example ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(example_sfm_scene_reconstruction src/example_sfm_scene_reconstruction.cpp)
-#TARGET_LINK_LIBRARIES(example_sfm_scene_reconstruction ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(example_sfm_trajectory_reconstruction src/example_sfm_trajectory_reconstruction.cpp)
-#TARGET_LINK_LIBRARIES(example_sfm_trajectory_reconstruction ${OpenCV_LIBS} )
+if(EXISTS "$ENV{HOME}/usr/share/OpenCV/")
+	set(OpenCV_DIR "$ENV{HOME}/usr/lib/cmake/OpenCV/")	
+endif()
+find_package(OpenCV REQUIRED)
+if(${OpenCV_FOUND})
+	message("OpenCV_DIR: " ${OpenCV_DIR})
+	message("OpenCV_VERSION: " ${OpenCV_VERSION})
+	message("OpenCV_INCLUDE_DIRS: " ${OpenCV_INCLUDE_DIRS})
+	message("OpenCV_LIBS: " ${OpenCV_LIBS} )
+else()
+	message("OpenCV not found")
+endif()
 
 
+add_executable(tracking_objects_by_color src/tracking_objects_by_color.cpp)
+target_link_libraries(tracking_objects_by_color ${OpenCV_LIBS} )
 
-#ADD_EXECUTABLE(stereo_calib src/stereo_calib.cpp)
-#TARGET_LINK_LIBRARIES(stereo_calib ${OpenCV_LIBS} )
-
-
-#ADD_EXECUTABLE(OpenCV3BasicOperations src/OpenCV3BasicOperations.cpp)
-#TARGET_LINK_LIBRARIES(OpenCV3BasicOperations  ${OpenCV_LIBS} )
-
-#ADD_EXECUTABLE(bundle_adjuster_example1 src/bundle_adjuster_example1.cpp)
-#TARGET_LINK_LIBRARIES(bundle_adjuster_example1  ${OpenCV_LIBS}  ${CERES_LIBRARIES})
-
-#ADD_EXECUTABLE(bundle_adjuster_example2 src/bundle_adjuster_example2.cpp src/bal_problem.cpp)
-#TARGET_LINK_LIBRARIES(bundle_adjuster_example2  ${OpenCV_LIBS}  ${CERES_LIBRARIES} gflags)
+add_executable(BasicOperations src/BasicOperations.cpp)
+target_link_libraries(BasicOperations ${OpenCV_LIBS} )
 
 
-ADD_EXECUTABLE(icp src/icp.cpp)
-TARGET_LINK_LIBRARIES(icp  ${OpenCV_LIBS})
+add_executable(OpenCV3BasicOperations src/OpenCV3BasicOperations.cpp)
+target_link_libraries(OpenCV3BasicOperations  ${OpenCV_LIBS} )
+
+
+#add_executable(homography_example src/homography_example.cpp)
+#target_link_libraries(homography_example ${OpenCV_LIBS} )
+
+
+add_executable(affine_transformation_example src/affine_transformation_example.cpp)
+target_link_libraries(affine_transformation_example ${OpenCV_LIBS} )
+
+add_executable(perspective-n-point src/perspective-n-point.cpp)
+target_link_libraries(perspective-n-point ${OpenCV_LIBS} )
+
+#add_executable(camera_calibration_example src/camera_calibration_example.cpp)
+#target_link_libraries(camera_calibration_example ${OpenCV_LIBS} )
+
+#add_executable(stereo_rectify_uncalibrated src/stereo_rectify_uncalibrated.cpp)
+#target_link_libraries(stereo_rectify_uncalibrated ${OpenCV_LIBS} )
+
+#add_executable(stereo_calibration_example src/stereo_calibration_example.cpp)
+#target_link_libraries(stereo_calibration_example ${OpenCV_LIBS} )
+
+#add_executable(stereo_calib src/stereo_calib.cpp)
+#target_link_libraries(stereo_calib ${OpenCV_LIBS} )
+
+#add_executable(stereo_block_matching src/stereo_block_matching.cpp)
+#target_link_libraries(stereo_block_matching ${OpenCV_LIBS} )
+
+
+add_executable(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
+target_link_libraries(fundamental_matrix_estimation ${OpenCV_LIBS} )
+
+
+######################################### optical flow #########################################
+#add_executable(optical_flow src/optical_flow.cpp)
+#target_link_libraries(optical_flow ${OpenCV_LIBS} )
+
+#add_executable(optical_Flow_demo src/optical_Flow_demo.cpp)
+#target_link_libraries(optical_Flow_demo ${OpenCV_LIBS} )
+
+#add_executable(pyrlk_optical_flow src/pyrlk_optical_flow.cpp)
+#target_link_libraries(pyrlk_optical_flow ${OpenCV_LIBS} )
+
+#add_executable(lkdemo src/lkdemo.cpp)
+#target_link_libraries(lkdemo ${OpenCV_LIBS} )
+
+#add_executable(fback src/fback.cpp)
+#target_link_libraries(fback ${OpenCV_LIBS} )
+
+#add_executable(flow_video src/flow_video.cpp)
+#target_link_libraries(flow_video ${OpenCV_LIBS} )
+
+
+
+add_executable(visual_odometry src/visual_odometry.cpp)
+target_link_libraries(visual_odometry ${OpenCV_LIBS} )
+
+
+
+
+#add_executable(sfm_example src/sfm_example.cpp)
+#target_link_libraries(sfm_example ${OpenCV_LIBS} )
+
+#add_executable(example_sfm_scene_reconstruction src/example_sfm_scene_reconstruction.cpp)
+#target_link_libraries(example_sfm_scene_reconstruction ${OpenCV_LIBS} )
+
+#add_executable(example_sfm_trajectory_reconstruction src/example_sfm_trajectory_reconstruction.cpp)
+#target_link_libraries(example_sfm_trajectory_reconstruction ${OpenCV_LIBS} )
+
+
+
+add_executable(icp src/icp.cpp)
+target_link_libraries(icp  ${OpenCV_LIBS})
 
 
 
