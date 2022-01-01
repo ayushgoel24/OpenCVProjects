@@ -60,8 +60,11 @@ endif()
 
 message("\n########################################## OpenCV ##########################################\n")
 
-if(EXISTS "$ENV{HOME}/usr/share/OpenCV/")
-	set(OpenCV_DIR "$ENV{HOME}/usr/lib/cmake/OpenCV/")	
+#if(EXISTS "$ENV{HOME}/usr/share/OpenCV/")
+if(EXISTS "$ENV{HOME}/usr/share/opencv4/")
+
+#	set(OpenCV_DIR "$ENV{HOME}/usr/lib/cmake/opencv4/")
+	set(OpenCV_DIR "$ENV{HOME}/usr/lib/cmake/opencv4/")	
 endif()
 find_package(OpenCV REQUIRED)
 if(${OpenCV_FOUND})
@@ -74,15 +77,15 @@ else()
 endif()
 
 
-add_executable(tracking_objects_by_color src/tracking_objects_by_color.cpp)
-target_link_libraries(tracking_objects_by_color ${OpenCV_LIBS} )
+#add_executable(tracking_objects_by_color src/tracking_objects_by_color.cpp)
+#target_link_libraries(tracking_objects_by_color ${OpenCV_LIBS} )
 
 add_executable(BasicOperations src/BasicOperations.cpp)
 target_link_libraries(BasicOperations ${OpenCV_LIBS} )
 
 
-add_executable(OpenCV3BasicOperations src/OpenCV3BasicOperations.cpp)
-target_link_libraries(OpenCV3BasicOperations  ${OpenCV_LIBS} )
+#add_executable(OpenCV3BasicOperations src/OpenCV3BasicOperations.cpp)
+#target_link_libraries(OpenCV3BasicOperations  ${OpenCV_LIBS} )
 
 
 #add_executable(homography_example src/homography_example.cpp)
@@ -92,8 +95,8 @@ target_link_libraries(OpenCV3BasicOperations  ${OpenCV_LIBS} )
 add_executable(affine_transformation_example src/affine_transformation_example.cpp)
 target_link_libraries(affine_transformation_example ${OpenCV_LIBS} )
 
-add_executable(perspective-n-point src/perspective-n-point.cpp)
-target_link_libraries(perspective-n-point ${OpenCV_LIBS} )
+#add_executable(perspective-n-point src/perspective-n-point.cpp)
+#target_link_libraries(perspective-n-point ${OpenCV_LIBS} )
 
 #add_executable(camera_calibration_example src/camera_calibration_example.cpp)
 #target_link_libraries(camera_calibration_example ${OpenCV_LIBS} )
@@ -136,8 +139,8 @@ target_link_libraries(fundamental_matrix_estimation ${OpenCV_LIBS} )
 
 
 
-add_executable(visual_odometry src/visual_odometry.cpp)
-target_link_libraries(visual_odometry ${OpenCV_LIBS} )
+#add_executable(visual_odometry src/visual_odometry.cpp)
+#target_link_libraries(visual_odometry ${OpenCV_LIBS} )
 
 
 
@@ -153,8 +156,8 @@ target_link_libraries(visual_odometry ${OpenCV_LIBS} )
 
 
 
-add_executable(icp src/icp.cpp)
-target_link_libraries(icp  ${OpenCV_LIBS})
+#add_executable(icp src/icp.cpp)
+#target_link_libraries(icp  ${OpenCV_LIBS})
 
 
 
