@@ -1,4 +1,4 @@
-
+//https://en.wikipedia.org/wiki/Hough_transform
 
 
 //void HoughLineTransform(Mat src )

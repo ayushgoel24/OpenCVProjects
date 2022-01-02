@@ -1,9 +1,5 @@
 #include <opencv4/opencv2/opencv.hpp>
 
-#include <iostream>
-
-
-
 void createMatrix()
 {
 /*
@@ -63,6 +59,21 @@ void createMatrix()
 void matrixVectorConversion()
 {
     std::vector<double> values={1};
+
+    
+    cv::Mat MatrixofRawData;
+    int NumberofRows=2;
+    int NumberofCols=3;
+    MatrixofRawData.create(NumberofRows,NumberofCols,CV_32FC1);
+       
+    std::vector<float> RowVector;
+    RowVector.push_back(0.2);
+    RowVector.push_back(1.2);
+    RowVector.push_back(4.2);
+    MatrixofRawData.push_back(RowVector);
+    //MatrixofRawData.convertTo();
+    cv::Mat MatFromVector(RowVector , true);
+    std::cout<<"MatFromVector: "<< MatFromVector <<std::endl;   
 
     //createing image, merging, spliting channels
 
@@ -171,10 +182,11 @@ void readWriteImage()
 
 void matrixConversion()
 {
-
+    //convertTo
+    //cv::cvtColor
 }
 
-void drawingFunsction()
+void drawingFunsctionAndCoordinate()
 {
     /*
     image's points in opencv has the follow index:
@@ -318,14 +330,6 @@ void displayingVideo()
     
 }
 
-
-
-
-
-
-
-
-
 int main(int argc, char** argv)
 {
     //accessingPixel();
@@ -334,7 +338,7 @@ int main(int argc, char** argv)
     //matrixOperations();
     //readWriteImage();
     //matrixOperations();
-    //drawingFunsction();
+    //drawingFunsctionAndCoordinate();
 }
 
 

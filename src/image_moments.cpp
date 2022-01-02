@@ -1,3 +1,6 @@
+//https://aishack.in/tutorials/image-moments/
+//https://en.wikipedia.org/wiki/Image_moment
+
 //void Moments(	CvMoments &moments,IplImage * img)
 //{
 ///*	class Moments
