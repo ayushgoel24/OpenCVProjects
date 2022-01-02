@@ -8,7 +8,7 @@ ENV TZ=Europe/Berlin
 
 
 # Update aptitude 
-RUN apt update && apt install cmake git build-essential libeigen3-dev libgtk2.0-dev locales x11-apps -y
+RUN apt update && apt install cmake git build-essential  gdb libeigen3-dev libgtk2.0-dev locales x11-apps -y
 
 VOLUME /home/opencv-src
 
@@ -39,7 +39,7 @@ RUN rm -rf opencv/build && mkdir opencv/build cd opencv/mkdir && cd opencv/build
 
 VOLUME /home/OpenCVProjects
 RUN cd /home/
-RUN git clone https://github.com/behnamasadi/OpenCVProjects
+#RUN git clone https://github.com/behnamasadi/OpenCVProjects
 
 
 

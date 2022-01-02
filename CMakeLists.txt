@@ -16,11 +16,11 @@ if(${CERES_FOUND})
 	message("Ceres_VERSION: " ${Ceres_VERSION})
 	message("CERES_INCLUDE_DIRS: " ${CERES_INCLUDE_DIRS})
 	message("CERES_LIBRARIES: " ${CERES_LIBRARIES})
-	add_executable(bundle_adjuster_example1 src/bundle_adjuster_example1.cpp)
-	target_link_libraries(bundle_adjuster_example1  ${OpenCV_LIBS}  ${CERES_LIBRARIES})
+	#add_executable(bundle_adjuster_example1 src/bundle_adjuster_example1.cpp)
+	#target_link_libraries(bundle_adjuster_example1  ${OpenCV_LIBS}  ${CERES_LIBRARIES})
 
-	add_executable(bundle_adjuster_example2 src/bundle_adjuster_example2.cpp src/bal_problem.cpp)
-	target_link_libraries(bundle_adjuster_example2  ${OpenCV_LIBS}  ${CERES_LIBRARIES} gflags)
+	#add_executable(bundle_adjuster_example2 src/bundle_adjuster_example2.cpp src/bal_problem.cpp)
+	#target_link_libraries(bundle_adjuster_example2  ${OpenCV_LIBS}  ${CERES_LIBRARIES} gflags)
 else()  	
 	message("Ceres not found")
 endif()	
@@ -60,10 +60,8 @@ endif()
 
 message("\n########################################## OpenCV ##########################################\n")
 
-#if(EXISTS "$ENV{HOME}/usr/share/OpenCV/")
-if(EXISTS "$ENV{HOME}/usr/share/opencv4/")
 
-#	set(OpenCV_DIR "$ENV{HOME}/usr/lib/cmake/opencv4/")
+if(EXISTS "$ENV{HOME}/usr/share/opencv4/")
 	set(OpenCV_DIR "$ENV{HOME}/usr/lib/cmake/opencv4/")	
 endif()
 find_package(OpenCV REQUIRED)
@@ -77,89 +75,54 @@ else()
 endif()
 
 
-#add_executable(tracking_objects_by_color src/tracking_objects_by_color.cpp)
-#target_link_libraries(tracking_objects_by_color ${OpenCV_LIBS} )
+add_executable(basic_operations src/basic_operations.cpp)
+target_link_libraries(basic_operations ${OpenCV_LIBS} )
 
-add_executable(BasicOperations src/BasicOperations.cpp)
-target_link_libraries(BasicOperations ${OpenCV_LIBS} )
+add_executable(hough_transform src/hough_transform.cpp)
+target_link_libraries(hough_transform ${OpenCV_LIBS} )
 
+add_executable(corner_detection src/corner_detection.cpp)
+target_link_libraries(corner_detection ${OpenCV_LIBS} )
 
-#add_executable(OpenCV3BasicOperations src/OpenCV3BasicOperations.cpp)
-#target_link_libraries(OpenCV3BasicOperations  ${OpenCV_LIBS} )
+add_executable(edge_detection src/edge_detection.cpp)
+target_link_libraries(edge_detection ${OpenCV_LIBS} )
 
+add_executable(blob_detection src/blob_detection.cpp)
+target_link_libraries(blob_detection ${OpenCV_LIBS} )
 
-#add_executable(homography_example src/homography_example.cpp)
-#target_link_libraries(homography_example ${OpenCV_LIBS} )
+add_executable(feature_description src/feature_description.cpp)
+target_link_libraries(feature_description ${OpenCV_LIBS} )
 
+add_executable(image_moments src/image_moments.cpp)
+target_link_libraries(image_moments ${OpenCV_LIBS} )
 
-add_executable(affine_transformation_example src/affine_transformation_example.cpp)
-target_link_libraries(affine_transformation_example ${OpenCV_LIBS} )
+add_executable(histogram_analysis src/histogram_analysis.cpp)
+target_link_libraries(histogram_analysis ${OpenCV_LIBS} )
 
-#add_executable(perspective-n-point src/perspective-n-point.cpp)
-#target_link_libraries(perspective-n-point ${OpenCV_LIBS} )
-
-#add_executable(camera_calibration_example src/camera_calibration_example.cpp)
-#target_link_libraries(camera_calibration_example ${OpenCV_LIBS} )
-
-#add_executable(stereo_rectify_uncalibrated src/stereo_rectify_uncalibrated.cpp)
-#target_link_libraries(stereo_rectify_uncalibrated ${OpenCV_LIBS} )
-
-#add_executable(stereo_calibration_example src/stereo_calibration_example.cpp)
-#target_link_libraries(stereo_calibration_example ${OpenCV_LIBS} )
-
-#add_executable(stereo_calib src/stereo_calib.cpp)
-#target_link_libraries(stereo_calib ${OpenCV_LIBS} )
-
-#add_executable(stereo_block_matching src/stereo_block_matching.cpp)
-#target_link_libraries(stereo_block_matching ${OpenCV_LIBS} )
+add_executable(affine_transformation src/affine_transformation.cpp)
+target_link_libraries(affine_transformation ${OpenCV_LIBS} )
 
 
 add_executable(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
 target_link_libraries(fundamental_matrix_estimation ${OpenCV_LIBS} )
 
+#add_executable(homography src/homography.cpp)
+#target_link_libraries(homography ${OpenCV_LIBS} )
+
+add_executable(icp src/icp.cpp)
+target_link_libraries(icp ${OpenCV_LIBS} )
+
+add_executable(perspective-n-point src/perspective-n-point.cpp)
+target_link_libraries(perspective-n-point ${OpenCV_LIBS} )
+
+add_executable(homogenious_conversion src/homogenious_conversion.cpp)
+target_link_libraries(homogenious_conversion ${OpenCV_LIBS} )
+
+add_executable(pca src/pca.cpp)
+target_link_libraries(pca ${OpenCV_LIBS} )
+
+
+
+
 
 ######################################### optical flow #########################################
-#add_executable(optical_flow src/optical_flow.cpp)
-#target_link_libraries(optical_flow ${OpenCV_LIBS} )
-
-#add_executable(optical_Flow_demo src/optical_Flow_demo.cpp)
-#target_link_libraries(optical_Flow_demo ${OpenCV_LIBS} )
-
-#add_executable(pyrlk_optical_flow src/pyrlk_optical_flow.cpp)
-#target_link_libraries(pyrlk_optical_flow ${OpenCV_LIBS} )
-
-#add_executable(lkdemo src/lkdemo.cpp)
-#target_link_libraries(lkdemo ${OpenCV_LIBS} )
-
-#add_executable(fback src/fback.cpp)
-#target_link_libraries(fback ${OpenCV_LIBS} )
-
-#add_executable(flow_video src/flow_video.cpp)
-#target_link_libraries(flow_video ${OpenCV_LIBS} )
-
-
-
-#add_executable(visual_odometry src/visual_odometry.cpp)
-#target_link_libraries(visual_odometry ${OpenCV_LIBS} )
-
-
-
-
-#add_executable(sfm_example src/sfm_example.cpp)
-#target_link_libraries(sfm_example ${OpenCV_LIBS} )
-
-#add_executable(example_sfm_scene_reconstruction src/example_sfm_scene_reconstruction.cpp)
-#target_link_libraries(example_sfm_scene_reconstruction ${OpenCV_LIBS} )
-
-#add_executable(example_sfm_trajectory_reconstruction src/example_sfm_trajectory_reconstruction.cpp)
-#target_link_libraries(example_sfm_trajectory_reconstruction ${OpenCV_LIBS} )
-
-
-
-#add_executable(icp src/icp.cpp)
-#target_link_libraries(icp  ${OpenCV_LIBS})
-
-
-
-
-
