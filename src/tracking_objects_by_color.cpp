@@ -42,7 +42,7 @@ void mouseEvent(int evt, int x, int y, int flags, void* param)
     char window_name[30] = "HSV Segmentation";
 
     Mat* image = (Mat*) param;
-    if (evt == CV_EVENT_LBUTTONDOWN)
+    if (evt == cv::EVENT_LBUTTONDOWN)
     {
 //        std::cout<<"clicked point: "<<x <<","<< y<<std::endl;
 //        std::cout<<"B: "<<(int)(*image).at<Vec3b>(y, x)[0]<<std::endl;
@@ -59,7 +59,7 @@ void mouseEvent(int evt, int x, int y, int flags, void* param)
 
         Mat HSV;
         Mat RGB=(*image)(Rect(x,y,1,1));
-        cvtColor(RGB, HSV,CV_BGR2HSV);
+        cv::cvtColor(RGB, HSV,cv::COLOR_BGR2HSV);
 
         Vec3b hsv=HSV.at<Vec3b>(0,0);
         int H=hsv.val[0];
@@ -68,21 +68,21 @@ void mouseEvent(int evt, int x, int y, int flags, void* param)
 
         iLowH=min(iLowH,H);
         iHighH=max(iHighH,H);
-        cvSetTrackbarPos("LowH", "Control", iLowH);
-        cvSetTrackbarPos("HighH", "Control", iHighH);
+        cv::setTrackbarPos("LowH", "Control", iLowH);
+        cv::setTrackbarPos("HighH", "Control", iHighH);
 
 
 
         iLowS=min(iLowS,S);
         iHighS=max(iHighS,S);
-        cvSetTrackbarPos("LowS", "Control", iLowS);
-        cvSetTrackbarPos("HighS", "Control", iHighS);
+        cv::setTrackbarPos("LowS", "Control", iLowS);
+        cv::setTrackbarPos("HighS", "Control", iHighS);
 
 
         iLowV=min(iLowV,V);
         iHighV=max(iHighV,V);
-        cvSetTrackbarPos("LowV", "Control", iLowV);
-        cvSetTrackbarPos("HighV", "Control", iHighV);
+        cv::setTrackbarPos("LowV", "Control", iLowV);
+        cv::setTrackbarPos("HighV", "Control", iHighV);
 
 
         char name[30];
@@ -163,7 +163,7 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
+    namedWindow("Control", cv::WINDOW_AUTOSIZE); //create a window called "Control"
 
 
 

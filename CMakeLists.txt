@@ -81,8 +81,8 @@ target_link_libraries(basic_operations ${OpenCV_LIBS} )
 add_executable(hough_transform src/hough_transform.cpp)
 target_link_libraries(hough_transform ${OpenCV_LIBS} )
 
-add_executable(corner_detection src/corner_detection.cpp)
-target_link_libraries(corner_detection ${OpenCV_LIBS} )
+add_executable(feature_detection src/feature_detection.cpp)
+target_link_libraries(feature_detection ${OpenCV_LIBS} )
 
 add_executable(edge_detection src/edge_detection.cpp)
 target_link_libraries(edge_detection ${OpenCV_LIBS} )
@@ -121,8 +121,33 @@ target_link_libraries(homogenious_conversion ${OpenCV_LIBS} )
 add_executable(pca src/pca.cpp)
 target_link_libraries(pca ${OpenCV_LIBS} )
 
+add_executable(morphological_transformation src/morphological_transformation.cpp)
+target_link_libraries(morphological_transformation ${OpenCV_LIBS} )
+
+add_executable(image_thresholding src/image_thresholding.cpp)
+target_link_libraries(image_thresholding ${OpenCV_LIBS} )
+
+#add_executable(camera_calibration_example src/camera_calibration_example.cpp)
+#target_link_libraries(camera_calibration_example ${OpenCV_LIBS} )
+
+add_executable(epipolar_geometry src/epipolar_geometry.cpp)
+target_link_libraries(epipolar_geometry ${OpenCV_LIBS} )
+
+add_executable(visual_odometry src/visual_odometry.cpp)
+target_link_libraries(visual_odometry ${OpenCV_LIBS} )
+
+add_executable(optical_flow src/optical_flow.cpp)
+target_link_libraries(optical_flow ${OpenCV_LIBS} )
+
+add_executable(tracking_objects_by_color src/tracking_objects_by_color.cpp)
+target_link_libraries(tracking_objects_by_color ${OpenCV_LIBS} )
+
+add_executable(essential_matrix_estimation src/essential_matrix_estimation.cpp)
+target_link_libraries(essential_matrix_estimation ${OpenCV_LIBS} )
 
 
+if(EXISTS "${CMAKE_SOURCE_DIR}/src/sandbox.cpp")
+    add_executable(sandbox src/sandbox.cpp)
+    target_link_libraries(sandbox ${OpenCV_LIBS} )
+endif()
 
-
-######################################### optical flow #########################################

@@ -49,7 +49,7 @@ B)We know M and X, To obtain T just T=M.X
 
 
 
-void GetAffineTransformation(char **argv)
+void getAffineTransformation(char **argv)
 {
 
     //http://docs.opencv.org/doc/tutorials/imgproc/imgtrans/warp_affine/warp_affine.html
@@ -137,7 +137,7 @@ void GetAffineTransformation(char **argv)
 
 
 
-void Estimat3DAffineion()
+void estimat3DAffineion()
 {
     //The function estimates an optimal 3D affine transformation between two 3D point sets using the RANSAC algorithm.
     //estimateAffine3D();
@@ -146,6 +146,11 @@ void Estimat3DAffineion()
 
 int main(int argc, char** argv)
 {
-    GetAffineTransformation(argv);
+
+    if(argc == 1)
+    {
+        argv[1] = strdup("../images/lena.jpg");
+    }
+    getAffineTransformation(argv);
 }
 

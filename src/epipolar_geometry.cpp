@@ -1,12 +1,7 @@
-
-
-
-#include <opencv2/nonfree/features2d.hpp>
-#include <opencv2/opencv.hpp>
+#include <opencv4/opencv2/opencv.hpp>
+#include <opencv4/opencv2/features2d.hpp>
 #include <iostream>
 #include <algorithm>
-
-#include <iomanip> 
 
 
 
@@ -49,33 +44,32 @@ How to run:
 int main(int argc, char ** argv)
 {
     
-    char* n_argv[] = { "epipolar_geometry", "../images/stereo_vision/tsucuba_left.png", "../images/stereo_vision/tsucuba_right.png"};
+    if(argc==1)
+    {
+        argv[1] =strdup("../images/stereo_vision/tsucuba_left.png");
+        argv[2]=strdup("../images/stereo_vision/tsucuba_right.png");
+    }
 
-    int length = sizeof(n_argv)/sizeof(n_argv[0]);
-
-    argc=length;
-    argv = n_argv;
-    
+    const int MAX_FEATURES = 500;
     cv::Mat left_image= cv::imread(argv[1]);
     cv::Mat right_image= cv::imread(argv[2]);
     std::vector<cv::KeyPoint> left_image_sift_keypoints, right_image_sift_keypoints, left_image_good_sift_keypoints, right_image_good_sift_keypoints;
 
     cv::KeyPoint left_image_good_keypoint, right_image_good_keypoint;
 
-    cv::SiftFeatureDetector sift_detector;
-    sift_detector.detect(left_image,left_image_sift_keypoints );
-    sift_detector.detect(right_image,right_image_sift_keypoints);
 
 
-    cv::SiftDescriptorExtractor sift_descriptor_extractor;
-
+    cv::Ptr<cv::Feature2D> ORB_detector=cv::ORB::create(MAX_FEATURES) ;
+    //cv::SiftFeatureDetector sift_detector;
+    ORB_detector->detect(left_image,left_image_sift_keypoints );
+    ORB_detector->detect(right_image,right_image_sift_keypoints);
 
 
     cv::Mat right_image_sift_descriptor, left_image_sift_descriptor;
 
 
-    sift_descriptor_extractor.compute(left_image,left_image_sift_keypoints,left_image_sift_descriptor);
-    sift_descriptor_extractor.compute(right_image,right_image_sift_keypoints,right_image_sift_descriptor);
+    ORB_detector->compute(left_image,left_image_sift_keypoints,left_image_sift_descriptor);
+    ORB_detector->compute(right_image,right_image_sift_keypoints,right_image_sift_descriptor);
 
 
     std::vector<cv::DMatch> matches;

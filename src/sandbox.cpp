@@ -4,15 +4,10 @@
 #include <sstream>
 #include <iostream>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-
 
 #include <climits>
-#include <opencv2/core/types_c.h>
-
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
+#include <opencv4/opencv2/videoio.hpp>
+#include <opencv4/opencv2/opencv.hpp>
 
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss(s);
@@ -87,7 +82,7 @@ int rectangle(cv::Mat image)
     std::vector<std::vector<cv::Point> > contours;
     std::vector<cv::Vec4i> hierarchy;
     //cv::findContours(mask,contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-    cv::findContours(image,contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+    cv::findContours(image,contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
     /// Draw contours and find biggest contour (if there are other contours in the image, we assume the biggest one is the desired rect)
     // drawing here is only for demonstration!
@@ -289,8 +284,8 @@ Use one of the blob libraries (listed below) to detect the blobs in the threshol
 void getVideoFromCam()
 {
     cv::VideoCapture webCam(1); // open the default camera
-    webCam.set(CV_CAP_PROP_FRAME_WIDTH,640);
-    webCam.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+    webCam.set(cv::CAP_PROP_FRAME_WIDTH ,640);
+    webCam.set(cv::CAP_PROP_FRAME_HEIGHT,480);
     if(!webCam.isOpened())  // check if we succeeded
     return;
 

@@ -1,4 +1,4 @@
-#include <opencv2/opencv.hpp>
+#include <opencv4/opencv2/opencv.hpp>
 
 
 void OPticalFlowLucasKanade()
@@ -216,14 +216,14 @@ void draw(cv::Mat &frame1, std::vector<cv::Point2f> &frame1_features,std::vector
         /* CV_RGB(red, green, blue) is the red, green, and blue components
         * of the color you want, each out of 255.
         */
-        CvScalar line_color; line_color = CV_RGB(255,0,0);
+        cv::Scalar line_color; line_color = CV_RGB(255,0,0);
         /* Let's make the flow field look nice with arrows. */
         /* The arrows will be a bit too short for a nice visualization because of the
        high framerate
         * (ie: there's not much motion between the frames). So let's lengthen them
        by a factor of 3.
         */
-        CvPoint p,q;
+        cv::Point p,q;
         p.x = (int) frame1_features[i].x;
         p.y = (int) frame1_features[i].y;
         q.x = (int) frame2_features[i].x;
@@ -241,16 +241,18 @@ void draw(cv::Mat &frame1, std::vector<cv::Point2f> &frame1_features,std::vector
         * "CV_AA" means antialiased drawing.
         * "0" means no fractional bits in the center cooridinate or radius.
         */
-        cv::line( frame1, p, q, line_color, line_thickness, CV_AA, 0 );
+        cv::line( frame1, p, q, line_color, 1 );
+        //cv::line(img, cv::Point(100,100), cv::Point(200,200), cv::Scalar(0,255,0), 1);
+
         /* Now draw the tips of the arrow. I do some scaling so that the
         * tips look proportional to the main line of the arrow.
         */
         p.x = (int) (q.x + 9 * cos(angle + pi / 4));
         p.y = (int) (q.y + 9 * sin(angle + pi / 4));
-        cv::line( frame1, p, q, line_color, line_thickness, CV_AA, 0 );
+        cv::line( frame1, p, q, line_color,  0 );
         p.x = (int) (q.x + 9 * cos(angle - pi / 4));
         p.y = (int) (q.y + 9 * sin(angle - pi / 4));
-        cv::line( frame1, p, q, line_color, line_thickness, CV_AA, 0 );
+        cv::line( frame1, p, q, line_color,  0 );
     }
 
 }
@@ -354,8 +356,8 @@ void OpticalFlowPyramidLukas_test(int argc, char** argv)
 
             cv::goodFeaturesToTrack( previous_gray,corners_prev,maxCorners,qualityLevel,minDistance,cv::Mat());
             cv::goodFeaturesToTrack( current_gray,corners_current,maxCorners,qualityLevel,minDistance,cv::Mat());
-            cv::cornerSubPix( previous_gray, corners_prev, cv::Size( win_size, win_size ), cv::Size( -1, -1 ),cv::TermCriteria( CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.03 ) );
-            cv::calcOpticalFlowPyrLK( previous_gray, current_gray, corners_prev, corners_current, features_found, feature_errors , cv::Size( win_size, win_size ), 5, cvTermCriteria( CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3 ), 0 );
+            cv::cornerSubPix( previous_gray, corners_prev, cv::Size( win_size, win_size ), cv::Size( -1, -1 ),cv::TermCriteria( cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS, 20, 0.03 ) );
+            cv::calcOpticalFlowPyrLK( previous_gray, current_gray, corners_prev, corners_current, features_found, feature_errors , cv::Size( win_size, win_size ), 5, cv::TermCriteria( cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS, 20, 0.3 ), 0 );
 
 
 //            int indexCorrection = 0;
@@ -493,9 +495,9 @@ void temp2(int argc, char ** argv)
     file_path="frames/";
 
 
-    std::cout<< int(vid.get(CV_CAP_PROP_FRAME_COUNT)) <<std::endl;
+    std::cout<< int(vid.get(cv::CAP_PROP_FRAME_COUNT)) <<std::endl;
 
-    int totoal_number_of_frame=int(vid.get(CV_CAP_PROP_FRAME_COUNT));
+    int totoal_number_of_frame=int(vid.get(cv::CAP_PROP_FRAME_COUNT));
     for(std::size_t i=0;i<totoal_number_of_frame;i=i+1)
     {
         vid>>frame;

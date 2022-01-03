@@ -17,7 +17,7 @@ double computeReprojectionErrors( const std::vector<std::vector<cv::Point3f> >& 
     {
       cv::projectPoints( cv::Mat(objectPoints[i]), rvecs[i], tvecs[i], cameraMatrix,  // project
                                            distCoeffs, imagePoints2);
-      err = norm(cv::Mat(imagePoints[i]), cv::Mat(imagePoints2), CV_L2);              // difference
+      err = norm(cv::Mat(imagePoints[i]), cv::Mat(imagePoints2),  cv::NORM_L2 );              // difference
 
       int n = (int)objectPoints[i].size();
       perViewErrors[i] = (float) std::sqrt(err*err/n);                        // save for this view
@@ -87,7 +87,7 @@ void camera_calibration_example(cv::Mat &camera_matrix, cv::Mat &distortion_coef
 
     while(successes<numBoards)
     {
-        cvtColor(image, gray_image, CV_BGR2GRAY);
+        cvtColor(image, gray_image, cv::COLOR_BGR2GRAY);
         bool found = findChessboardCorners(image, board_sz, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
         if(found)
         {
