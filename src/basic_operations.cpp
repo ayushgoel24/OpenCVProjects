@@ -1,12 +1,24 @@
 #include <opencv4/opencv2/opencv.hpp>
 
-void createMatrix()
-{
+
 /*
+1) Depth
+
+uchar       CV_8U   0
+char        CV_8S   1
+ushort      CV_16U  2
+short       CV_16S  3
+int	        CV_32S  4
+float       CV_32F  5
+double	    CV_64F  6
+            CV_USRTYPE1 7
+
+
+2) Type
     CV_<bit_depth>(S|U|F)C<number_of_channels>
-	elements type (uchar,short,int,float,double)
-	CV_8UC1 means an 8-bit unsigned single channel
-	CV_32FC3 means a 32-bit float matrix with three
+    elements type (uchar,short,int,float,double)
+    CV_8UC1 means an 8-bit unsigned single channel
+    CV_32FC3 means a 32-bit float matrix with three
 
     CV_32F is float!
     CV_64F is double!
@@ -19,20 +31,30 @@ void createMatrix()
     CV_32S    4    12    20    28
     CV_32F    5    13    21    29
     CV_64F    6    14    22    30
+
+
 */
- 
+
+
+
+
+
+
+void createMatrix()
+{
+
     int rows, cols;
     rows=600;
     cols=800;
 
     //1) 
-    cv::Mat img1=cv::Mat::zeros(rows, cols ,CV_64FC1 )+0.5;
+    cv::Mat img1=cv::Mat::zeros(rows, cols ,CV_64FC3 )+0.5;
+    //or
+    cv::Mat img10=cv::Mat::zeros(rows, cols ,CV_64FC(3) )+0.5;
 
-    std::cout<<"Total Number of Elements: " <<img1.total() <<std::endl;
+    // setting channel values: B: 0.5, G: 0,  R: 1
+    cv::Mat img11=cv::Mat(rows, cols ,CV_64FC(3), cv::Scalar(0.5,0,1) );
 
-
-    // According to the above table CV_64FC1=6
-    std::cout<<"Matrix data type is: " <<img1.type() <<std::endl;
     
     //2) 
     cv::Mat dst = cv::Mat::zeros( img1.size(), img1.type() );
@@ -50,6 +72,16 @@ void createMatrix()
     cv::Mat cameraMatrix2 = (cv::Mat_<double>(3,3) <<1,2,3,4,5,6);
     std::cout<<cameraMatrix2 <<std::endl;
 
+    //6) Matrices with More than Two Dimensions
+    //Mat is usually used for 2D matrices. we want multi-dimension matrices:
+
+    std::vector<int> dims= {5,3,7};
+    cv::Mat mat( dims, CV_32FC1);
+    std::cout << mat.at<float>(0,0,0);
+
+    //7 Matrices from exsiting data
+    float data[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    cv::Mat mat_data = cv::Mat(2, 5, CV_32F, data);
 
     cv::namedWindow("window",cv::WINDOW_AUTOSIZE);
     cv::imshow("window",img1 );
@@ -278,40 +310,39 @@ void readingCameraMatrix()
 
 }
 
-void imageChannels()
+void manipulatingImageChannels()
 {
-// Mat img(5,5,CV_64FC3); // declare three channels image 
-// Mat ch1, ch2, ch3; // declare three matrices 
-// // "channels" is a vector of 3 Mat arrays:
-// vector<Mat> channels(3);
-// // split img:
-// split(img, channels);
-// // get the channels (follow BGR order in OpenCV)
-// ch1 = channels[0];
-// ch2 = channels[1];
-// ch3 = channels[2]; 
-// // modify channel// then merge
 
-// merge(channels, img);
+    //1) first way
+    cv::Mat img(600,800,CV_64FC3); // declare three channels image
+    // "channels" is a vector of 3 Mat arrays:
+    std::vector<cv::Mat> channels(3);
+
+    // split img: split will always copy the data, since it's creating new matrices
+    cv::split(img, channels);
+    // get the channels (follow BGR order in OpenCV), modify channel, then merge
+    channels[0]= channels[0]+0.5;
 
 
+    // merge doesn't allocate any new memory,
+    cv::merge(channels, img);
 
-// Mat img, chans[3]; 
-// img = imread(.....);  //make sure its loaded with an image
+    //2) second way
+    img.setTo(cv::Scalar(0.5,0,1) );
 
-// //split the channels in order to manipulate them
-// split(img, chans);
 
-// //by default opencv put channels in BGR order , so in your situation you want to copy the first channel which is blue. Set green and red channels elements to zero.
-// chans[1]=Mat::zeros(img.rows, img.cols, CV_8UC1); // green channel is set to 0
-// chans[2]=Mat::zeros(img.rows, img.cols, CV_8UC1);// red channel is set to 0
 
-// //then merge them back
-// merge(chans, 3, img);
+    //3) third way
 
-// //display 
-// imshow("BLUE CHAN", img);
-// cvWaitKey();
+    if (img.isContinuous())
+    {
+
+    }
+
+
+    cv::namedWindow("window",cv::WINDOW_AUTOSIZE);
+    cv::imshow("window",img);
+    cv::waitKey(0);
 }
 
 void displayingVideo()
@@ -330,15 +361,161 @@ void displayingVideo()
     
 }
 
+void getVideoFromCam()
+{
+    cv::VideoCapture webCam(0); // open the default camera
+    webCam.set(cv::CAP_PROP_FRAME_WIDTH ,640);
+    webCam.set(cv::CAP_PROP_FRAME_HEIGHT,480);
+    if(!webCam.isOpened())  // check if we succeeded
+    return;
+
+    cv::namedWindow("camera",1);
+    for(;;)
+    {
+        cv::Mat frame;
+        webCam >> frame;
+        cv::imshow("camera", frame);
+        if(cv::waitKey(200) >= 0) break;
+    }
+}
+
+void matStructure()
+{
+
+    //Mat is to treat it like a smart pointer (like shared_pt
+    cv::Mat img1,img2;
+    int rows, cols;
+    rows=600;
+    cols=800;
+    //img1.create(rows, cols,CV_64FC3);
+    img1.create(rows, cols,CV_64FC3);
+    cv::Mat M(rows, cols,CV_64FC3, cv::Scalar(1,1,0));
+
+    /*
+    img2 and img1 share one memory part for their internal matrix data,
+    any change you make to the matrix data of img1 or img2 will happen to another one
+    */
+    img2=img1;
+
+
+    //To create a new clone independent from m1, we can use clone() function:
+    cv::Mat img3=img1.clone();
+    //if you already have img4, use copyTo():
+    cv::Mat img4;
+    img1.copyTo(img4);
+
+
+    std::cout<<"Number of Channels: " <<img1.channels() <<std::endl;
+    std::cout<<"Number of dims: " <<img1.dims<<std::endl;
+
+    // According to the above table CV_64F=6
+    std::cout<<"Matrix data depth is: " <<img1.depth()<<std::endl;
+    // According to the above table CV_64FC3=22
+    std::cout<<"Matrix data type is: " <<img1.type() <<std::endl;
+
+    std::cout<<"rows: " <<img1.rows<<std::endl;
+    std::cout<<"cols: " <<img1.cols<<std::endl;
+    std::cout<<"height: " <<img1.size().height<<std::endl;
+    std::cout<<"width: " <<img1.size().width<<std::endl;
+
+
+    //total() returns the number number of pixels, if channel is more than 1, each pixel is again an array
+    std::cout<<"total()= Number of Elements(Pixels): " <<img1.total()<<", which is rows*cols="<<img1.rows*img1.cols  <<std::endl;
+
+    //returns the matrix element size in bytes. For example, if the matrix type is CV_16SC3 ,  the method returns 3*sizeof(short) or 6
+    std::cout<<"size of matrix element size * by number of channels : " <<img1.elemSize()  <<std::endl;
+
+
+    //matrix element channel size in bytes, that is, it ignores the number of channels. For example, if the matrix type is CV_16SC3 , the method returns sizeof(short) or 2
+    std::cout<<"size of matrix element size : " <<img1.elemSize1()  <<std::endl;
+
+
+    std::cout<<"data size: " <<img1.total()*img1.elemSize()  <<std::endl;
+
+    std::cout<<"Number of Bytes: " <<img1.rows*img1.cols*img1.channels()*sizeof(double)  <<std::endl;
+
+    //cv::Mat::data pointer,
+    double *input = (double *)(img1.data);
+
+
+
+
+
+
+    /*reshape
+    Mat Mat::reshape(int cn, int rows=0) const
+
+    cn – New number of channels. If the parameter is 0, the number of channels remains the same.
+
+    rows – New number of rows. If the parameter is 0, the number of rows remains the same.
+
+    mat = [a b c d]
+    mat.reshape(0,2)
+    [a b; c d]
+    */
+
+
+    //rowRange
+
+    cv::namedWindow("window",cv::WINDOW_AUTOSIZE);
+    cv::imshow("window",M);
+    cv::waitKey(0);
+
+
+}
+
+void scalarValues()
+{
+    std::cout<<cv::Scalar::all(1.0) <<std::endl;
+
+
+    std::cout<<cv::Scalar(1) <<std::endl;
+
+    std::cout<<cv::Scalar(1,1) <<std::endl;
+
+    cv::Mat m(100, 100, CV_8UC3);
+    m = cv::Scalar(5, 10, 15);
+
+
+    cv::Mat M(7,7,CV_32FC2,cv::Scalar(1,3));
+
+
+
+}
+
+cv::Mat createMat(unsigned char *rawData, unsigned int dimX, unsigned int dimY)
+{
+    // No need to allocate outputMat here
+    cv::Mat outputMat;
+
+    // Build headers on your raw data
+    cv::Mat channelR(dimY, dimX, CV_8UC1, rawData);
+    cv::Mat channelG(dimY, dimX, CV_8UC1, rawData + dimX * dimY);
+    cv::Mat channelB(dimY, dimX, CV_8UC1, rawData + 2 * dimX * dimY);
+
+    // Invert channels,
+    // don't copy data, just the matrix headers
+    std::vector<cv::Mat> channels{ channelB, channelG, channelR };
+
+    // Create the output matrix
+    cv::merge(channels, outputMat);
+
+    return outputMat;
+}
+
 int main(int argc, char** argv)
 {
-    //accessingPixel();
     //createMatrix();
     //readWriteImage();
     //matrixOperations();
     //readWriteImage();
     //matrixOperations();
     //drawingFunsctionAndCoordinate();
+    //getVideoFromCam();
+    //matStructure();
+    manipulatingImageChannels();
+    //scalarValues();
+    //accessingMatrixElements();
 }
 
 

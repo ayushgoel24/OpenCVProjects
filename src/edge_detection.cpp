@@ -11,6 +11,69 @@ PrewittRoberts
 Cross
 */
 
+void prewitt(char** argv)
+{
+    cv::Mat G_x=(cv::Mat_<double>(3,3)<<+1, 0, -1,+1, 0, -1,+1, 0, -1 );
+    cv::Mat G_y=(cv::Mat_<double>(3,3)<<+1,+1,+1,0,0,0,-1,-1,-1);
+
+    std::cout<<"G_x:\n" <<G_x  <<std::endl;
+
+
+    cv::Mat src_img= imread(argv[1],cv::IMREAD_GRAYSCALE  );
+    cv::Mat src_img_G_x,src_img_G_y;
+
+
+
+    cv::Mat upside_down, mirrored;
+
+
+    int flipCode;
+    /*
+    0 means flipping around the x-axis
+    Positive value means flipping around y-axis.
+    Negative value means flipping around both axes.
+    */
+    flipCode=0;
+    cv::flip(G_x,upside_down,flipCode);
+    std::cout<<"G_x upside down:\n"<<upside_down<<std::endl;
+
+
+
+
+    flipCode=1;
+    cv::flip(upside_down,mirrored,flipCode);
+    std::cout<<"G_x upside downed mirrored:\n"<<mirrored<<std::endl;
+
+    cv::filter2D(src_img,src_img_G_x,-1,mirrored );
+
+
+    std::cout<<"G_y:\n" <<G_y  <<std::endl;
+
+    flipCode=0;
+    cv::flip(G_y,upside_down,flipCode);
+    std::cout<<"G_y upside down:\n"<<upside_down<<std::endl;
+
+
+
+
+    flipCode=1;
+    cv::flip(upside_down,mirrored,flipCode);
+    std::cout<<"G_y upside downed mirrored:\n"<<mirrored<<std::endl;
+
+    cv::filter2D(src_img,src_img_G_y,-1,mirrored );
+
+
+
+
+    cv::imshow("G_x",src_img_G_x);
+    cv::imshow("G_y",src_img_G_y);
+    cv::waitKey(0);
+
+}
+
+
+
+
 //https://www.youtube.com/channel/UCf0WB91t8Ky6AuYcQV0CcLw/videos
 //https://www.youtube.com/watch?v=7AlwDYmjrcs
 //https://en.wikipedia.org/wiki/Roberts_cross
@@ -168,8 +231,13 @@ void sobelEdgeDetector()
    waitKey(0);
 }
 
-int main()
+int main(int argc, char** argv)
 {
-    sobelEdgeDetector();
+    //sobelEdgeDetector();
+    if(argc == 1)
+    {
+        argv[1] = strdup("../images/lena.jpg");
+    }
+    prewitt(argv);
     return 0;
 }

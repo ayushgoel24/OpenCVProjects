@@ -145,6 +145,22 @@ target_link_libraries(tracking_objects_by_color ${OpenCV_LIBS} )
 add_executable(essential_matrix_estimation src/essential_matrix_estimation.cpp)
 target_link_libraries(essential_matrix_estimation ${OpenCV_LIBS} )
 
+add_executable(image_morphe src/image_morphe.cpp)
+target_link_libraries(image_morphe ${OpenCV_LIBS} )
+
+add_executable(triangulation src/triangulation.cpp)
+target_link_libraries(triangulation ${OpenCV_LIBS} )
+
+add_executable(structured_light_range_finding src/structured_light_range_finding.cpp)
+target_link_libraries(structured_light_range_finding ${OpenCV_LIBS} )
+
+add_executable(2d_image_point_to_3d_world_unit_vector src/2d_image_point_to_3d_world_unit_vector.cpp)
+target_link_libraries(2d_image_point_to_3d_world_unit_vector ${OpenCV_LIBS} )
+
+add_executable(convolution src/convolution.cpp)
+target_link_libraries(convolution ${OpenCV_LIBS} )
+
+
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/src/sandbox.cpp")
     add_executable(sandbox src/sandbox.cpp)

@@ -25,15 +25,6 @@ std::vector<std::string> split(const std::string &s, char delim)
     return elems;
 }
 
-template<typename to, typename from>
-to lexical_cast(from const &x)
-{
-    std::stringstream os;
-    to ret;
-    os << x;
-    os >> ret;
-    return ret;
-}
 
 
 
@@ -168,9 +159,8 @@ void reading_file()
           std::vector<std::string> single_line_points= split(line, delim);
 
 
-          x= int(10* lexical_cast<double>(single_line_points.at(0)) ) ;
-          y= int(10* lexical_cast<double>(single_line_points.at(1) ) ) ;
-          //z=lexical_cast<double>(single_line_points.at(2));
+          x= int(10* atof(single_line_points.at(0).c_str() ) ) ;
+          y= int(10* atof(single_line_points.at(1).c_str() ) ) ;
 
 
           x_max=std::max(x,x_max);
@@ -342,7 +332,7 @@ void extract_frame_from_vid(int argc, char ** argv)
 //        if(i % 4==0)
 //            cv::imwrite("images/"+lexical_cast<std::string>(i) +".jpg",frame);
         if(cv::waitKey(30) >= 0) break;
-        cv::imwrite("images/"+lexical_cast<std::string>(i) +".jpg",frame);
+        cv::imwrite("images/"+std::to_string(i) +".jpg",frame);
         i++;
     }
 }
@@ -408,7 +398,7 @@ int main(int argc, char * argv[])
 
 */
 
-    extract_frame_from_vid(argc,argv);
+    //extract_frame_from_vid(argc,argv);
 
     return 0;
 }
