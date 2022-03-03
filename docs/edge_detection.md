@@ -18,13 +18,13 @@ Rapid changes in image intensity in small window caused by:
 
 The **x-coordinate** is defined here as increasing in the **"right"-direction**, and the **y-coordinate** is defined as increasing in the **"down"-direction**.
 
-
-<img src="https://latex.codecogs.com/svg.latex?{\displaystyle \begin{bmatrix}
+![Image Coordinate System](https://latex.codecogs.com/svg.latex?{\displaystyle \begin{bmatrix}
 x,y   &  x+1,y   & ... & x+n,y  \\
 x,y+1 &  x+2,y+1  & ... & x+n,y+1  \\
 \vdots &  &  \ddots & \vdots \\ 
  x,y+m  & x+2,y+m  & ... & x+n,y+m  \\
-\end{bmatrix} }" />
+\end{bmatrix} })
+
 
 
 
