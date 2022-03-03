@@ -1,5 +1,6 @@
 #include <opencv4/opencv2/opencv.hpp>
-
+//https://learnopencv.com/image-filtering-using-convolution-in-opencv/
+//https://learnopencv.com/image-filtering-using-convolution-in-opencv/#intro-convo-kernels
 void flipingKernel()
 {
     cv::Mat kernel = (cv::Mat_<double>(3,3) <<1,2,3,4,5,6,7,8,9);

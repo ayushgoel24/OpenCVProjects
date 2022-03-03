@@ -13,6 +13,24 @@ Rapid changes in image intensity in small window caused by:
 - Magnitude
 - Orientation
 
+
+# Image Coordinate System
+
+The **x-coordinate** is defined here as increasing in the **"right"-direction**, and the **y-coordinate** is defined as increasing in the **"down"-direction**.
+
+
+<img src="https://latex.codecogs.com/svg.latex?{\displaystyle \begin{bmatrix}
+x,y   &  x+1,y   & ... & x+n,y  \\
+x,y+1 &  x+2,y+1  & ... & x+n,y+1  \\
+\vdots &  &  \ddots & \vdots \\ 
+ x,y+m  & x+2,y+m  & ... & x+n,y+m  \\
+\end{bmatrix} }" />
+
+
+
+
+
+
 # Edge Detection Using First Derivative, Gradient Operator
 
 First derivative edge detection provides both location and strength
@@ -22,7 +40,33 @@ First derivative edge detection provides both location and strength
 <!-- 
 ![gradients_operator](images/gradients_operator.jpg)
 -->
-![gradients_1d](images/edge.jpg)
+
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?
+{\displaystyle }\nabla I=\begin{bmatrix}
+\frac{\partial I}{\partial x} & , 0 \\\end{bmatrix}" />
+![gradients_1d](images/edge_x.jpg)
+
+
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?
+{\displaystyle \nabla I=\begin{bmatrix}
+0& , \frac{\partial I}{\partial y} \\\end{bmatrix} }" />
+![gradients_1d](images/edge_y.jpg)
+
+
+
+
+<img src="https://latex.codecogs.com/svg.latex?
+{\displaystyle \nabla I=\begin{bmatrix}
+\frac{\partial I}{\partial x} & , \frac{\partial I}{\partial y} \\\end{bmatrix} }" />
+![gradients_1d](images/edge_x_y.jpg)
+
+
 
 
 
@@ -32,7 +76,7 @@ The simplest approach is to use central differences:
 <img src="https://latex.codecogs.com/svg.latex?
 {\displaystyle {\begin{aligned}L_{x}(x,y)&=-{\frac {1}{2}}L(x-1,y)+0\cdot L(x,y)+{\frac {1}{2}}\cdot L(x+1,y)\\[8pt]L_{y}(x,y)&=-{\frac {1}{2}}L(x,y-1)+0\cdot L(x,y)+{\frac {1}{2}}\cdot L(x,y+1),\end{aligned}}}" />
 
-The **x-coordinate** is defined here as increasing in the **"right"-direction**, and the **y-coordinate** is defined as increasing in the **"down"-direction**.
+
 
 <img src="https://latex.codecogs.com/svg.latex?|\nabla L|={\sqrt {L_{x}^{2}+L_{y}^{2}}}" />
 
@@ -162,7 +206,13 @@ Examples:
 
 
 
-# An Example of 2D Convolution
+# Convolution
+
+
+
+
+Filtering often involves replacing the value of a pixel in the input image F with the weighted sum of its neighbors
+
 convolution of 5×5 sized image matrix `x` with the kernel `h` of size 3×3, 
 
 ![what_is_edge](images/Fig1_2D_Conv.jpg)
@@ -202,3 +252,6 @@ void filter2D(Mat src,
 ```
 
 </div>
+
+
+Refs: [1](https://www.youtube.com/watch?v=lOEBsQodtEQ&t)
