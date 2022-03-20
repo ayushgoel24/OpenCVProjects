@@ -172,7 +172,7 @@ direction of the gradient:
 
 
 
-where  <!-- <img src="https://latex.codecogs.com/svg.latex?{\displaystyle *}" /> --> <img src="https://latex.codecogs.com/svg.image?\inline&space;{\displaystyle&space;*}" title="https://latex.codecogs.com/svg.image?\inline {\displaystyle *}" /> here denotes the 2-dimensional convolution operation.
+where  <!-- <img src="https://latex.codecogs.com/svg.latex?{\displaystyle *}" /> --> <img src="https://latex.codecogs.com/svg.image?{\displaystyle&space;*}" title="https://latex.codecogs.com/svg.image?{\displaystyle *}" /> here denotes the 2-dimensional convolution operation.
 
 Prewitt it is a separable filter (can be decomposed as the products of an averaging and a differentiation kernel), therefore <!--  <img src="https://latex.codecogs.com/svg.latex?{\displaystyle \mathbf {G_{x}} }" /> --><img src="https://latex.codecogs.com/svg.image?\inline&space;{\displaystyle&space;\mathbf&space;{G_{x}}&space;}" title="https://latex.codecogs.com/svg.image?\inline {\displaystyle \mathbf {G_{x}} }" /> can be written as:
 
