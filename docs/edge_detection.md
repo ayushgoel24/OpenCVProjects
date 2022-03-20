@@ -27,7 +27,7 @@ x,y+1 &  x+2,y+1  & ... & x+n,y+1  \\
 \end{bmatrix} }"/>
 -->
 
-<img src="https://latex.codecogs.com/svg.image?\inline&space;{\displaystyle&space;\begin{bmatrix}x,y&space;&space;&space;&&space;&space;x&plus;1,y&space;&space;&space;&&space;...&space;&&space;x&plus;n,y&space;&space;\\x,y&plus;1&space;&&space;&space;x&plus;2,y&plus;1&space;&space;&&space;...&space;&&space;x&plus;n,y&plus;1&space;&space;\\\vdots&space;&&space;&space;&&space;&space;\ddots&space;&&space;\vdots&space;\\&space;&space;x,y&plus;m&space;&space;&&space;x&plus;2,y&plus;m&space;&space;&&space;...&space;&&space;x&plus;n,y&plus;m&space;&space;\\\end{bmatrix}&space;}" title="https://latex.codecogs.com/svg.image?\inline {\displaystyle \begin{bmatrix}x,y & x+1,y & ... & x+n,y \\x,y+1 & x+2,y+1 & ... & x+n,y+1 \\\vdots & & \ddots & \vdots \\ x,y+m & x+2,y+m & ... & x+n,y+m \\\end{bmatrix} }" />
+<img src="https://latex.codecogs.com/svg.image?\begin{bmatrix}x,y&space;&space;&space;&&space;&space;x&plus;1,y&space;&space;&space;&&space;...&space;&&space;x&plus;n,y&space;&space;\\x,y&plus;1&space;&&space;&space;x&plus;2,y&plus;1&space;&space;&&space;...&space;&&space;x&plus;n,y&plus;1&space;&space;\\\vdots&space;&&space;&space;&&space;&space;\ddots&space;&&space;\vdots&space;\\&space;&space;x,y&plus;m&space;&space;&&space;x&plus;2,y&plus;m&space;&space;&&space;...&space;&&space;x&plus;n,y&plus;m&space;&space;\\\end{bmatrix}&space;" title="https://latex.codecogs.com/svg.image?\begin{bmatrix}x,y & x+1,y & ... & x+n,y \\x,y+1 & x+2,y+1 & ... & x+n,y+1 \\\vdots & & \ddots & \vdots \\ x,y+m & x+2,y+m & ... & x+n,y+m \\\end{bmatrix} " />
 
 # Edge Detection Using First Derivative, Gradient Operator
 
