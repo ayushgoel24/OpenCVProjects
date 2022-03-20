@@ -1,8 +1,11 @@
 # Normalization
 The linear normalization of a grayscale digital image:
 
+<!-- 
 <img src="https://latex.codecogs.com/svg.latex?I_{N}=( {\text{newMax}}-{\text{newMin}}   ){\frac  {   I-{\text{Min}}  }{{\text{Max}}-{\text{Min}}}}+{\text{newMin}}" />
+-->
 
+<img src="https://latex.codecogs.com/svg.image?I_{N}=(&space;{\text{newMax}}-{\text{newMin}}&space;&space;&space;){\frac&space;&space;{&space;&space;&space;I-{\text{Min}}&space;&space;}{{\text{Max}}-{\text{Min}}}}&plus;{\text{newMin}}" title="https://latex.codecogs.com/svg.image?I_{N}=( {\text{newMax}}-{\text{newMin}} ){\frac { I-{\text{Min}} }{{\text{Max}}-{\text{Min}}}}+{\text{newMin}}" />
 
 
 # Contrast Stretching
