@@ -40,4 +40,4 @@ xhost +local:`docker inspect --format='{{ .Config.Hostname }}' $containerId`
 [Structured Light Range Finding](src/structured_light_range_finding.cpp)  
 [2d Image Points to 3D World Unit Vector](src/2d_image_point_to_3d_world_unit_vector.cpp)  
 
-Refs: [1](https://www.youtube.com/channel/UCf0WB91t8Ky6AuYcQV0CcLw/videos),[2](https://github.com/spmallick/learnopencv/blob/master/README.md)  
+Refs: [1](https://www.youtube.com/channel/UCf0WB91t8Ky6AuYcQV0CcLw/videos),[2](https://github.com/spmallick/learnopencv/blob/master/README.md), [3](http://graphics.cs.cmu.edu/courses/15-463/)  
