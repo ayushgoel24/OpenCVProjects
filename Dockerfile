@@ -1,49 +1,82 @@
-FROM ubuntu:latest
+# ubunutu is the base image
+
+FROM ubuntu:20.04
+
 
 MAINTAINER Behnam Asadi behnam.asadi@gmail.com
 
-#Configuring tzdata
-ENV DEBIAN_FRONTEND=noninteractive
+
+# this is for timezone config
+ENV DEBIAN_FRONTEND=noninteractive 
 ENV TZ=Europe/Berlin
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update
+#-y is for accepting yes when the system asked us for installing the package
+RUN apt update && apt install -y build-essential cmake git openssh-server gdb pkg-config libeigen3-dev libgtk2.0-dev locales x11-apps -y
 
 
-# Update aptitude 
-RUN apt update && apt install cmake git build-essential  gdb libeigen3-dev libgtk2.0-dev locales x11-apps -y
 
-VOLUME /home/opencv-src
 
-RUN cd /home/opencv-src
+# 1) gflags
+RUN echo "************************ gflags ************************"
+RUN git clone https://github.com/gflags/gflags
+RUN mkdir -p gflags/build &&  cd gflags/build
+WORKDIR "gflags/build"
+RUN pwd
+RUN cmake -DCMAKE_CXX_FLAGS=-std=c++11 -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON   ../ && make -j8 all install 
+RUN cd ../../
+RUN rm -rf gflags
 
-RUN git clone https://github.com/gflags/gflags.git
-RUN git clone https://github.com/google/glog.git
+
+# 2) glog
+RUN echo "************************ glog ************************"
+RUN git clone https://github.com/google/glog
+WORKDIR "glog/build"
+RUN mkdir -p  glog/build && cd glog/build
+RUN cmake -DCMAKE_CXX_FLAGS=-std=c++11 -DCMAKE_BUILD_TYPE=Release  -DBUILD_SHARED_LIBS=ON   ../ && make -j8 all install 
+WORKDIR "/"
+RUN rm -rf glog
+
+
+RUN echo "************************ googletest ************************"
+# 3) googletest
+RUN git clone https://github.com/google/googletest
+RUN mkdir -p  googletest/build && cd googletest/build
+WORKDIR "googletest/build"
+RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../ && make -j8 all install 
+
+
+
+
+
+RUN echo "************************ ceres ************************"
+# 4) ceres
 RUN git clone https://github.com/ceres-solver/ceres-solver.git
+RUN mkdir -p  ceres-solver/build && cd ceres-solver/build
+WORKDIR "ceres-solver/build"
+RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../ && make -j8 all install 
+
+
+
+
+RUN echo "************************ opencv ************************"
+# 5) opencv
 RUN git clone https://github.com/opencv/opencv.git 
+RUN mkdir -p  opencv/build && cd opencv/build
+WORKDIR "opencv/build"
+RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../ && make -j8 all install 
+
+
+
+
+
+
+
+
+RUN echo "************************ opencv_contrib ************************"
+# 6) opencv_contrib
 RUN git clone https://github.com/opencv/opencv_contrib.git
-
-
-# gflags
-RUN rm -rf gflags/build && mkdir gflags/build &&  cd gflags/build && cmake ../   -DCMAKE_CXX_FLAGS=-std=c++11 -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON   && make -j8 all install && cd ../../
-
-
-# glog
-RUN rm -rf glog/build && mkdir glog/build && cd glog/build && cmake -DCMAKE_CXX_FLAGS=-std=c++11 -DCMAKE_BUILD_TYPE=Release  -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=ON   .. && make -j8 all install && cd ../../
-
-
-# ceres
-RUN rm -rf ceres-solver/build && mkdir ceres-solver/build &&  cd ceres-solver/build && cmake -DCMAKE_CXX_FLAGS=-std=c++11 -DCMAKE_BUILD_TYPE=Release  -DBUILD_SHARED_LIBS=ON  -Dglog_DIR=/usr/lib/cmake/glog/  .. && make -j8 all install  &&  cd ../../
-
-
-# opencv
-RUN rm -rf opencv/build && mkdir opencv/build cd opencv/mkdir && cd opencv/build && cmake  -DCMAKE_CXX_FLAGS=-std=c++11 -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules -DCMAKE_BUILD_TYPE=Release -DOPENCV_ENABLED_NONFREE=True  .. && make -j8 all install
-
-
-VOLUME /home/OpenCVProjects
-RUN cd /home/
-#RUN git clone https://github.com/behnamasadi/OpenCVProjects
-
-
-
-
-
-
-
+RUN mkdir -p  opencv_contribbuild && cd opencv_contrib/build
+WORKDIR "opencv_contrib/build"
+RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../ && make -j8 all install

@@ -2,14 +2,44 @@ cmake_minimum_required(VERSION 3.1 )
 project( OpenCVProjects )
 set(CMAKE_BUILD_TYPE Debug)
 
+# Check for c++11 support
+INCLUDE(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+IF(COMPILER_SUPPORTS_CXX11)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+ELSEIF(COMPILER_SUPPORTS_CXX0X)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+ELSE()
+  MESSAGE(ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+ENDIF()
+
+MESSAGE("EIGEN3_VERSION: " ${EIGEN3_VERSION})
+INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
+set(OpenCV_DIR "$ENV{HOME}/usr/lib/cmake/opencv4")
 
 
 message("\n########################################## Ceres ##########################################\n")
+ADD_DEFINITIONS(-DCERES_GFLAGS_NAMESPACE=${GFLAGS_NAMESPACE})
 
 if(EXISTS "$ENV{HOME}/usr/lib/cmake/Ceres")
 	set(Ceres_DIR  "$ENV{HOME}/usr/lib/cmake/Ceres")	
 endif()
 
+set(glog_DIR "$ENV{HOME}/usr/lib/cmake/glog/")
+FIND_PACKAGE(glog REQUIRED google-glog glog)
+MESSAGE("GLOG_FOUND: " ${glog_FOUND})
+MESSAGE("GLOG_INCLUDE_DIRS: " ${GLOG_INCLUDE_DIRS})
+MESSAGE("GLOG_LIBRARIES: " ${GLOG_LIBRARY})
+
+
+
+
+set(Ceres_DIR "$ENV{HOME}/usr/lib/cmake/Ceres")
+FIND_PACKAGE(Ceres REQUIRED)
+MESSAGE("CERES_FOUND: " ${CERES_FOUND})
+MESSAGE("CERES_VERSION: " ${CERES_VERSION})
+MESSAGE("CERES_LIBRARIES: " ${CERES_LIBRARIES})
 
 find_package (Ceres QUIET)
 if(${CERES_FOUND})
@@ -29,14 +59,6 @@ endif()
 message("\n########################################## Eigen ##########################################\n")
 
 
-find_package (Eigen3 QUIET)
-if(${EIGEN3_FOUND})
-	include_directories(${EIGEN3_INCLUDE_DIR})
-	message("EIGEN3_VERSION: " ${EIGEN3_VERSION})
-	message("EIGEN3_INCLUDE_DIR: " ${EIGEN3_INCLUDE_DIR})
-else()  	
-	message("Eigen not found")
-endif()
 
 
 
@@ -61,8 +83,8 @@ endif()
 message("\n########################################## OpenCV ##########################################\n")
 
 
-if(EXISTS "$ENV{HOME}/usr/share/opencv4/")
-	set(OpenCV_DIR "$ENV{HOME}/usr/lib/cmake/opencv4/")	
+#ADD_EXECUTABLE(affine_transformation_example src/affine_transformation_example.cpp)
+#TARGET_LINK_LIBRARIES(affine_transformation_example ${OpenCV_LIBS} )
 endif()
 find_package(OpenCV REQUIRED)
 if(${OpenCV_FOUND})
@@ -92,6 +114,7 @@ target_link_libraries(blob_detection ${OpenCV_LIBS} )
 
 add_executable(feature_description src/feature_description.cpp)
 target_link_libraries(feature_description ${OpenCV_LIBS} )
+#TARGET_LINK_LIBRARIES(optical_flow ${OpenCV_LIBS} )
 
 add_executable(image_moments src/image_moments.cpp)
 target_link_libraries(image_moments ${OpenCV_LIBS} )
@@ -157,6 +180,9 @@ target_link_libraries(structured_light_range_finding ${OpenCV_LIBS} )
 add_executable(2d_image_point_to_3d_world_unit_vector src/2d_image_point_to_3d_world_unit_vector.cpp)
 target_link_libraries(2d_image_point_to_3d_world_unit_vector ${OpenCV_LIBS} )
 
+#ADD_EXECUTABLE(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
+#TARGET_LINK_LIBRARIES(fundamental_matrix_estimation ${OpenCV_LIBS} )
+
 add_executable(convolution src/convolution.cpp)
 target_link_libraries(convolution ${OpenCV_LIBS} )
 
@@ -166,4 +192,37 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/src/sandbox.cpp")
     add_executable(sandbox src/sandbox.cpp)
     target_link_libraries(sandbox ${OpenCV_LIBS} )
 endif()
+TARGET_LINK_LIBRARIES(fundamental_essential_matrix_recover_pose  ${OpenCV_LIBS} -fopenmp)
+
+
+ADD_EXECUTABLE(decompose_projection_matrix src/decompose_projection_matrix.cpp)
+TARGET_LINK_LIBRARIES(decompose_projection_matrix  ${OpenCV_LIBS} -fopenmp)
+
+ADD_EXECUTABLE(kalman_Example src/kalman_Example.cpp)
+TARGET_LINK_LIBRARIES(kalman_Example  ${OpenCV_LIBS} -fopenmp)
+
+
+ADD_EXECUTABLE(tracking_example src/tracking_example.cpp)
+TARGET_LINK_LIBRARIES(tracking_example  ${OpenCV_LIBS} -fopenmp)
+
+ADD_EXECUTABLE(projection_example src/projection_example.cpp)
+TARGET_LINK_LIBRARIES(projection_example  ${OpenCV_LIBS} -fopenmp )
+
+ADD_EXECUTABLE(rotation_matrices src/rotation_matrices.cpp)
+TARGET_LINK_LIBRARIES(rotation_matrices  ${OpenCV_LIBS} -fopenmp)
+
+ADD_EXECUTABLE(eigen_opencv_matrix_conversion src/eigen_opencv_matrix_conversion.cpp)
+TARGET_LINK_LIBRARIES(eigen_opencv_matrix_conversion ${OpenCV_LIBS} -fopenmp)
+
+ADD_EXECUTABLE(fundamental_matrix src/fundamental_matrix.cpp)
+TARGET_LINK_LIBRARIES(fundamental_matrix ${OpenCV_LIBS} -fopenmp)
+
+ADD_EXECUTABLE(essential_matrix src/essential_matrix.cpp)
+TARGET_LINK_LIBRARIES(essential_matrix ${OpenCV_LIBS} -fopenmp)
+
+ADD_EXECUTABLE(recover_pose src/recover_pose.cpp)
+TARGET_LINK_LIBRARIES(recover_pose ${OpenCV_LIBS} -fopenmp)
+
+ADD_EXECUTABLE(bundle_adjustment src/bundle_adjustment.cpp)
+TARGET_LINK_LIBRARIES(bundle_adjustment ${OpenCV_LIBS} -fopenmp ${GFLAGS_LIBRARIES} ${CERES_LIBRARIES} ${GLOG_LIBRARY})
 
