@@ -13,7 +13,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update
 #-y is for accepting yes when the system asked us for installing the package
-RUN apt update && apt install -y build-essential cmake git openssh-server gdb pkg-config libeigen3-dev libgtk2.0-dev locales x11-apps -y
+RUN apt update && apt install -y build-essential cmake git openssh-server gdb pkg-config libeigen3-dev libgtk2.0-dev locales x11-apps libsuitesparse-dev -y
 
 
 
@@ -45,7 +45,8 @@ RUN git clone https://github.com/google/googletest
 RUN mkdir -p  googletest/build && cd googletest/build
 WORKDIR "googletest/build"
 RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../ && make -j8 all install 
-
+WORKDIR "/"
+RUN rm -rf googletest
 
 
 
@@ -56,6 +57,10 @@ RUN git clone https://github.com/ceres-solver/ceres-solver.git
 RUN mkdir -p  ceres-solver/build && cd ceres-solver/build
 WORKDIR "ceres-solver/build"
 RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../ && make -j8 all install 
+WORKDIR "/"
+RUN rm -rf ceres-solver
+
+
 
 
 
@@ -76,7 +81,8 @@ RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED
 
 RUN echo "************************ opencv_contrib ************************"
 # 6) opencv_contrib
+WORKDIR "/opencv"
 RUN git clone https://github.com/opencv/opencv_contrib.git
-RUN mkdir -p  opencv_contribbuild && cd opencv_contrib/build
+RUN mkdir -p  opencv_contrib/build && cd opencv_contrib/build
 WORKDIR "opencv_contrib/build"
 RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../ && make -j8 all install
