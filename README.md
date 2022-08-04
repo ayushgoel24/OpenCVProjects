@@ -11,7 +11,7 @@ This project contains my Computer Vinson Projects with OpenCV.
 ### 1. Building the Image
 There is docker file for this project where contains all dependencies and you build the image with :   
 
-`docker build -t myopencv-image .`
+`docker build -t myopencv_image .`
 
 ### 2. Creating the container
 Create a container where you mount the checkout code into your container: 
