@@ -15,9 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag myopencv-image:$(date +%s)
+      run: docker build . --file Dockerfile --tag myopencv_image:$(date +%s)
     - name: create the container      
-      run: docker run --name myopencv_container -v GITHUB_WORKSPACE:/OpenCVProjects  myopencv-image
+      run: docker run --name myopencv_container -v GITHUB_WORKSPACE:/OpenCVProjects  myopencv_image
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
