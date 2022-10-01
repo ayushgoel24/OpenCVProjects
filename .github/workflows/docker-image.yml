@@ -15,7 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag myopencv_image:$(date +%s)
+#      run: docker build . --file Dockerfile --tag myopencv_image:$(date +%s)
+      run: docker build . --file Dockerfile --tag myopencv_image:latest
     - name: create the container      
       run: docker run --name myopencv_container -v GITHUB_WORKSPACE:/OpenCVProjects  myopencv_image
 
