@@ -10,26 +10,20 @@ depending on the orientation of the projection plane towards the axes of the dep
 ## One Point Perspective
 In one point perspective all lines recede toward one vanishing point.
 
-<img src="images/one-point-perspective.jpg" width="400" height="400"/>  
-
-image courtesy: [1](https://jaejohns.com/one-point-perspective/)
+<img src="images/one-point-perspective.svg" width="400" height="400"/>  
 
 ## Two Point Perspective
 In two point perspective, lines converge on two vanishing points.
  
-<img src="images/two-point-perspective.png" />  
+<img src="images/two-point-perspective.svg" width="400" height="400"/>  
 
-image courtesy: [1](http://teach.robynbriggs.com/architectural-drawing-1/2-point-perspective)
- 
 
 ## Three Point Perspective
 In three point perspective all lines recede toward one of the three vanishing points.
 
-<img src="images/three-point-perspective1.jpg" />  
+<img src="images/three-point-perspective.svg" width="400" height="400"/>  
 
-<img src="images/three-point-perspective2.jpg" width="500" height="500"/>  
-
-image courtesy: [1](https://www.craftsy.com/post/three-point-perspective/#:~:text=In%20three%2Dpoint%20perspective%20all,vision%20roughly%20in%20the%20middle.), [2](https://www.how-to-draw-funny-cartoons.com/3-point-perspective.html)
+image courtesy: [1](https://en.wikipedia.org/wiki/3D_projection)
 
 
 

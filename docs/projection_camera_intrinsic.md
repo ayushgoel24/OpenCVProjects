@@ -1,4 +1,14 @@
-# Orthographic Projection
+# Graphical projection
+
+There are two graphical projection categories:
+
+- parallel projection
+- perspective projection
+
+
+<img src="images/comparison_of_graphical_projections.svg" width="500" height="500" />
+
+
 
 # Pinhole camera model
 

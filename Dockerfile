@@ -65,14 +65,15 @@ RUN apt update && apt install -y build-essential cmake git openssh-server gdb pk
 
 
 # 5) opencv_contrib
-RUN echo "************************ opencv_contrib ************************"
-RUN git clone https://github.com/opencv/opencv_contrib.git
-WORKDIR "/"
+#RUN echo "************************ opencv_contrib ************************"
+#RUN git clone https://github.com/opencv/opencv_contrib.git
+#WORKDIR "/"
 
 
-# 6) opencv
-RUN echo "************************ opencv ************************"
-RUN git clone https://github.com/opencv/opencv.git 
-RUN mkdir -p  opencv/build && cd opencv/build
-WORKDIR "opencv/build"
-RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DOPENCV_EXTRA_MODULES_PATH=/opencv_contrib/modules -DCMAKE_BUILD_TYPE=Release -DOPENCV_ENABLE_NONFREE=True -DBUILD_TIFF=True  ../ &&  make -j12 all install 
+## 6) opencv
+#RUN echo "************************ opencv ************************"
+#RUN git clone https://github.com/opencv/opencv.git 
+#RUN mkdir -p  opencv/build && cd opencv/build
+#WORKDIR "opencv/build"
+#RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DOPENCV_EXTRA_MODULES_PATH=/opencv_contrib/modules -DCMAKE_BUILD_TYPE=Release -DOPENCV_ENABLE_NONFREE=True -DBUILD_TIFF=True  ../ &&  make -j12 all install 
+#WORKDIR "/"
