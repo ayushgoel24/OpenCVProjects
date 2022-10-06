@@ -183,8 +183,8 @@ target_link_libraries(icp ${OpenCV_LIBS} )
 add_executable(perspective-n-point src/perspective-n-point.cpp)
 target_link_libraries(perspective-n-point ${OpenCV_LIBS} )
 
-add_executable(homogenious_conversion src/homogenious_conversion.cpp)
-target_link_libraries(homogenious_conversion ${OpenCV_LIBS} )
+add_executable(homogeneous_conversion src/homogeneous_conversion.cpp)
+target_link_libraries(homogeneous_conversion ${OpenCV_LIBS} )
 
 add_executable(pca src/pca.cpp)
 target_link_libraries(pca ${OpenCV_LIBS} )
@@ -233,14 +233,17 @@ target_link_libraries(rodrigue_rotation_matrices ${OpenCV_LIBS} )
 add_executable(projection_camera_intrinsic src/projection_camera_intrinsic.cpp)
 target_link_libraries(projection_camera_intrinsic ${OpenCV_LIBS} pthread )
 
-#add_executable(homography src/homography.cpp)
-#target_link_libraries(homography ${OpenCV_LIBS} )
+add_executable(homography src/homography.cpp)
+target_link_libraries(homography ${OpenCV_LIBS} )
 
 #add_executable(camera_calibration_example src/camera_calibration_example.cpp)
 #target_link_libraries(camera_calibration_example ${OpenCV_LIBS} )
 
-#ADD_EXECUTABLE(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
-#TARGET_LINK_LIBRARIES(fundamental_matrix_estimation ${OpenCV_LIBS} )
+#add_executable(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
+#target_link_libraries(fundamental_matrix_estimation ${OpenCV_LIBS} )
+
+add_executable(perspective_projection src/perspective_projection.cpp)
+target_link_libraries(perspective_projection ${OpenCV_LIBS} )
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/src/sandbox.cpp")
     add_executable(sandbox src/sandbox.cpp)

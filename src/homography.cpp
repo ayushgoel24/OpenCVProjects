@@ -1,20 +1,31 @@
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/features2d.hpp>
 #include <opencv2/opencv.hpp>
-//#include <opencv2/nonfree/nonfree.hpp>
-#include <opencv2/xfeatures2d/nonfree.hpp>
+
 
 /*
-getPerspectiveTransform ->needs 4 points, based on SVD
 findHomography -> N points, based on RANSAC and SVD
 
 
 perspectiveTransform -> Performs the Homography matrix transformation on points
 warpPerspective -> If you want to transform an image using perspective transformation, use warpPerspective()
 */
-/**********************************************Finding homography Matrix from 4 Corresponding Points***********************************************/
-void get_homographyMatrix()
+
+
+
+/****************************** Finding homography Matrix from 4 Corresponding Points ******************************/
+
+template <typename T>
+void printArray(std::vector<T> array)
 {
-    std::vector<cv::Point2f> obj;
-    std::vector<cv::Point2f> scene;
+    for(auto element:array)
+        std::cout<<element <<std::endl;
+}
+
+void getHomographyMatrix()
+{
+    std::vector<cv::Point2f> plane1;
+    std::vector<cv::Point2f> plane2;
     std::vector<cv::Point2f> obj_projection;
 
     cv::Point2f A,B,C,D,A_P,B_P,C_P,D_P ;
@@ -30,10 +41,11 @@ void get_homographyMatrix()
     D.x=0;
     D.y=150;
 
-    obj.push_back(A);
-    obj.push_back(B);
-    obj.push_back(C);
-    obj.push_back(D);
+    plane1.push_back(A);
+    plane1.push_back(B);
+    plane1.push_back(C);
+    plane1.push_back(D);
+
 
 
     A_P.x=100;
@@ -48,16 +60,28 @@ void get_homographyMatrix()
     D_P.x=100;
     D_P.y=200;
 
-    scene.push_back(A_P);
-    scene.push_back(B_P);
-    scene.push_back(C_P);
-    scene.push_back(D_P);
+    plane2.push_back(A_P);
+    plane2.push_back(B_P);
+    plane2.push_back(C_P);
+    plane2.push_back(D_P);
 
-    cv::Mat homography_matrix= cv::getPerspectiveTransform(obj,scene);
+
+    std::cout<< "Points in plane 1" <<std::endl;
+    printArray(plane1);
+
+
+    std::cout<< "Points in plane 2" <<std::endl;
+    printArray(plane2);
+
+
+    cv::Mat homographyMatrix= cv::getPerspectiveTransform(plane1,plane2);
     std::cout<<"Estimated Homography Matrix is:" <<std::endl;
-    std::cout<< homography_matrix <<std::endl;
+    std::cout<< homographyMatrix <<std::endl;
 
-    perspectiveTransform( obj, obj_projection, homography_matrix);
+
+    std::cout<<"Projecting points in plane 1 with our estimated Homography Matrix is:" <<std::endl;
+
+    cv::perspectiveTransform( plane1, obj_projection, homographyMatrix);
     for(std::size_t i=0;i<obj_projection.size();i++)
     {
         std::cout<<obj_projection.at(i).x <<"," <<obj_projection.at(i).y<<std::endl;
@@ -65,19 +89,20 @@ void get_homographyMatrix()
 }
 
 
-/**********************************************Finding homography Matrix using RANSAC***********************************************/
+/****************************** Finding homography Matrix between two images using keypoints and RANSAC ******************************/
 
-void findHomography_Test(int argc, char** argv)
+void findHomographyExample(int argc, char** argv)
 {
-//	The input arrays src_points and dst_points can be either
-//		1)N-by-2(pixel coordinates) matrices
-//		2)N-by-3 (homogeneous coordinates)	matrices
-//	The final argument, homography, is just a 	3-by-3 matrix to
-
+/*    
+The input arrays src_points and dst_points can be either
+1)N-by-2(pixel coordinates) matrices
+2)N-by-3 (homogeneous coordinates)	matrices
+The final argument, homography, is just a 	3-by-3 matrix to
+*/
 
     if( argc != 3 )
     {
-        printf(" Usage: ./main_Homography <img1> <img2>\n");
+        printf(" Usage: ./homography <img1> <img2>\n");
         return;
     }
 
@@ -90,9 +115,11 @@ void findHomography_Test(int argc, char** argv)
     }
 
     //-- Step 1: Detect the keypoints using SURF Detector
-    int minHessian = 400;
+//    int minHessian = 400;
+    //cv::SiftFeatureDetector detector( minHessian );
+    cv::SiftFeatureDetector detector;
 
-    cv::SurfFeatureDetector detector( minHessian );
+    
 
     std::vector<cv::KeyPoint> keypoints_object, keypoints_scene;
 
@@ -100,7 +127,9 @@ void findHomography_Test(int argc, char** argv)
     detector.detect( img_scene, keypoints_scene );
 
     //-- Step 2: Calculate descriptors (feature vectors)
-    cv::SurfDescriptorExtractor extractor;
+    //cv::SurfDescriptorExtractor extractor;
+    cv::SiftFeatureDetector extractor;
+    
 
     cv::Mat descriptors_object, descriptors_scene;
 
@@ -151,7 +180,7 @@ void findHomography_Test(int argc, char** argv)
         scene.push_back( keypoints_scene[ good_matches[i].trainIdx ].pt );
     }
 
-    cv::Mat H = findHomography( obj, scene, CV_RANSAC );
+    cv::Mat H = findHomography( obj, scene, cv::RANSAC );
 
     //-- Get the corners from the image_1 ( the object to be "detected" )
     std::vector<cv::Point2f> obj_corners(4);
@@ -159,7 +188,7 @@ void findHomography_Test(int argc, char** argv)
     obj_corners[2] = cv::Point( img_object.cols, img_object.rows ); obj_corners[3] = cv::Point( 0, img_object.rows );
     std::vector<cv::Point2f> scene_corners(4);
 
-    perspectiveTransform( obj_corners, scene_corners, H);
+    cv::perspectiveTransform( obj_corners, scene_corners, H);
 
 
     //-- Draw lines between the corners (the mapped object in the scene - image_2 )
@@ -170,7 +199,7 @@ void findHomography_Test(int argc, char** argv)
     cv::line( img_matches, scene_corners[3] + offset, scene_corners[0] + offset, cv::Scalar( 0, 255, 0), 4 );
 
     //-- Show detected matches
-    imshow( "Good Matches & Object detection", img_matches );
+    cv::imshow( "Good Matches & Object detection", img_matches );
 
     cv::waitKey(0);
 
@@ -180,7 +209,7 @@ void findHomography_Test(int argc, char** argv)
 
 
 
-/**********************************************Applying homography perspective***********************************************/
+/****************************** Applying homography perspective ******************************/
 
 
 // We need 4 corresponding 2D points(x,y) to calculate homography.
@@ -197,8 +226,8 @@ void showFinal(cv::Mat src1,cv::Mat src2)
 {
 
     cv::Mat gray,gray_inv,src1final,src2final;
-    cv::cvtColor(src2,gray,CV_BGR2GRAY);
-    threshold(gray,gray,0,255,CV_THRESH_BINARY);
+    cv::cvtColor(src2,gray,cv::COLOR_BGR2GRAY);
+    threshold(gray,gray,0,255,   cv::THRESH_BINARY);
     //adaptiveThreshold(gray,gray,255,ADAPTIVE_THRESH_MEAN_C,THRESH_BINARY,5,4);
     bitwise_not ( gray, gray_inv );
     src1.copyTo(src1final,gray_inv);
@@ -206,7 +235,7 @@ void showFinal(cv::Mat src1,cv::Mat src2)
     cv::Mat finalImage = src1final+src2final;
     cv::namedWindow( "output", cv::WINDOW_AUTOSIZE );
     cv::imshow("output",finalImage);
-    cvWaitKey(0);
+    cv::waitKey(0);
 
 }
 
@@ -240,19 +269,18 @@ void on_mouse( int e, int x, int y, int d, void *ptr )
 }
 
 
-int homographyPerspective_Test( int argc, char** argv )
+int applyHomographyPerspective( int argc, char** argv )
 {
-//  We need tow argumemts. "Main image" and "logo image"
     if( argc != 3)
     {
-        std::cout <<" Usage: error" << std::endl;
+        std::cout <<" Usage: ./homography <main_image> <logo_image>\n"<< std::endl;
         return -1;
     }
 
 
 // Load images from arguments passed.
-    imageMain = cv::imread(argv[1], CV_LOAD_IMAGE_COLOR);
-    imageLogo = cv::imread(argv[2], CV_LOAD_IMAGE_COLOR);
+    imageMain = cv::imread(argv[1], cv::IMREAD_COLOR);
+    imageLogo = cv::imread(argv[2], cv::IMREAD_COLOR);
 // Push the 4 corners of the logo image as the 4 points for correspondence to calculate homography.
     left_image.push_back(cv::Point2f(float(0),float(0)));
     left_image.push_back(cv::Point2f(float(0),float(imageLogo.rows)));
@@ -271,7 +299,7 @@ int homographyPerspective_Test( int argc, char** argv )
 //  Press "Escape button" to exit
     while(1)
     {
-        int key=cvWaitKey(10);
+        int key=cv::waitKey(10);
         if((char)key==(char)27) break;
     }
 
@@ -282,22 +310,5 @@ int homographyPerspective_Test( int argc, char** argv )
 
 int main(int argc, char** argv)
 {
-
-
-/*
-    How to run:
-    ./main ../images/homography/homography1.JPG  ../images/homography/homography2.JPG
-*/
-
-//    findHomography_Test(argc, argv);
-
-
-    /*
-    How to run:
-    ./main  ../images/homography/main.jpg ../images/homography/logo.jpg
-    */
-//    homographyPerspective_Test(  argc, argv );
-
-
-    get_homographyMatrix();
+    getHomographyMatrix();
 }

@@ -13,7 +13,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 
 #-y is for accepting yes when the system asked us for installing the package
-RUN apt update && apt install -y build-essential cmake git openssh-server gdb pkg-config libeigen3-dev libgtk2.0-dev locales x11-apps libsuitesparse-dev libva-dev ffmpeg -y
+RUN apt update && apt install -y build-essential cmake git openssh-server gdb pkg-config libeigen3-dev libsuitesparse-dev libva-dev ffmpeg -y libcanberra-gtk-module libcanberra-gtk3-module libgtk2.0-dev locales x11-apps
 
 
 
@@ -75,4 +75,4 @@ RUN echo "************************ opencv ************************"
 RUN git clone https://github.com/opencv/opencv.git 
 RUN mkdir -p  opencv/build && cd opencv/build
 WORKDIR "opencv/build"
-RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DOPENCV_EXTRA_MODULES_PATH=/opencv_contrib/modules -DCMAKE_BUILD_TYPE=Release -DOPENCV_ENABLED_NONFREE=True   -DBUILD_TIFF=True  ../ &&  make -j12 all install 
+RUN cmake -DCMAKE_CXX_FLAGS=-std=c++1z -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DOPENCV_EXTRA_MODULES_PATH=/opencv_contrib/modules -DCMAKE_BUILD_TYPE=Release -DOPENCV_ENABLE_NONFREE=True -DBUILD_TIFF=True  ../ &&  make -j12 all install 

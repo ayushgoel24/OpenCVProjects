@@ -273,7 +273,7 @@ int main(int argc, char** argv) {
 ////	int _X_bar[22] = {5, 217, 22, 168, 68, 141, 111, 125, 158, 115, 202, 111, 235, 106, 283, 111, 366, 136, 395, 151, 432, 188,};
 //	//Mat X_bar(11,2,CV_32SC1,_X_bar); Mat X_bar_32f; X_bar.convertTo(X_bar_32f,CV_32F);
     double theta = -0.01*CV_PI;
-    float _RotM[4] = { cos(theta), -sin(theta), sin(theta), cos(theta) };
+    double _RotM[4] = { cos(theta), -sin(theta), sin(theta), cos(theta) };
 
     //RNG rng;
     //Mat X32f; X.convertTo(X32f,CV_32F);

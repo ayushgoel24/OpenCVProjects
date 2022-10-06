@@ -38,7 +38,7 @@ You can remove unnecessary images and containers by:
 ### GUI application with docker
 1. You need to run:
 
-`docker run --name myopencv_container -v /home/behnam/workspace/OpenCVProjects:/OpenCVProjects --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"  -it myopencv-image`
+`docker run --name myopencv_container -v /home/behnam/workspace/OpenCVProjects:/OpenCVProjects --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"  -it myopencv_image`
 
 2. On the host run the following (every time you run your container):
 
@@ -52,19 +52,21 @@ read more [here](https://ros-developer.com/2017/11/08/docker/)
 
 
 # [Index](#)
-[Affine Transformation](src/affine_transformation.cpp)    
+[Affine Transformation](docs/affine_transformation.md)    
 [Basic Operations](src/basic_operations.cpp)    
 [Blob Detection](src/blob_detection.cpp)    
 [Corner Detection](src/corner_detection.cpp)    
 [Edge Detection](docs/edge_detection.md)    
 [Feature Description](src/feature_description.cpp)    
-[Fundamental Matrix_estimation](src/fundamental_matrix_estimation.cpp)    
+[Fundamental Matrix Estimation](src/fundamental_matrix_estimation.cpp)    
 [Histogram Analysis](docs/histogram_analysis.md)    
-[Homogenious_conversion](src/homogenious_conversion.cpp)    
-[Homography](src/homography.cpp)    
+[Homogeneous Conversion](src/homogeneous_conversion.cpp)    
+[Perspective Transformation](docs/perspective_transform.md)    
+[Homography Transformation](docs/homography.md)    
 [Hough Transform](src/hough_transform.cpp)    
 [ICP](src/icp.cpp)    
 [Image Moments](src/image_moments.cpp)    
+[Image Rectification](docs/image_rectification.md)  
 [Lense Distortion Modeling](dscs/lense_distortion.md)  
 [Morphological Transformation](src/morphological_transformation.cpp)    
 [PCA](src/pca.cpp)    
