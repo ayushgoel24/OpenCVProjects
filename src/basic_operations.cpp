@@ -503,6 +503,14 @@ cv::Mat createMat(unsigned char *rawData, unsigned int dimX, unsigned int dimY)
     return outputMat;
 }
 
+
+void draw_xyz_frame_over_image(cv::Mat image,cv::Point2f reference_point,std::vector<cv::Point2f >end_points ,int thickness=5)
+{
+    cv::line(image,reference_point, end_points.at(0),cv::Scalar(255,0,0),thickness);
+    cv::line(image,reference_point,end_points.at(1) ,cv::Scalar(0,255,0),thickness);
+    cv::line(image,reference_point,end_points.at(2) ,cv::Scalar(0,0,255),thickness);
+}
+
 int main(int argc, char** argv)
 {
     //createMatrix();

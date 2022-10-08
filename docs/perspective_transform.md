@@ -29,6 +29,17 @@ image courtesy: [1](https://en.wikipedia.org/wiki/3D_projection)
 
 # Weak perspective projection
 
+# Forced Perspective
+
+Refs: [1](https://en.wikipedia.org/wiki/Forced_perspective)
+
+
+# Curvilinear Perspective
+
+
+Refs: [1](https://en.wikipedia.org/wiki/Curvilinear_perspective)
+
+
 # Perspective Transformation Matrix
 
 Affine Transformation Matrix had the following form:

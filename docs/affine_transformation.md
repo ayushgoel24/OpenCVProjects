@@ -45,8 +45,11 @@ A scaling can be represented by a scaling matrix:
 ## OpenCV Affine Transformation
 In OpenCV you can call `cv::warpAffine` to apply an affine transformation to an image. The function warpAffine transforms the source image using the specified matrix:
 
-<img src="https://latex.codecogs.com/svg.image?\texttt{dst}&space;(x,y)&space;=&space;\texttt{src}&space;(&space;\texttt{M}&space;_{11}&space;x&space;&plus;&space;\texttt{M}&space;_{12}&space;y&space;&plus;&space;\texttt{M}&space;_{13},&space;\texttt{M}&space;_{21}&space;x&space;&plus;&space;\texttt{M}&space;_{22}&space;y&space;&plus;&space;\texttt{M}&space;_{23})" title="https://latex.codecogs.com/svg.image?\texttt{dst} (x,y) = \texttt{src} ( \texttt{M} _{11} x + \texttt{M} _{12} y + \texttt{M} _{13}, \texttt{M} _{21} x + \texttt{M} _{22} y + \texttt{M} _{23})" />
+<img src="https://latex.codecogs.com/svg.image?dst&space;(x,y)&space;=&space;src&space;(&space;M&space;_{11}&space;x&space;&plus;&space;M&space;_{12}&space;y&space;&plus;&space;M&space;_{13},&space;M&space;_{21}&space;x&space;&plus;&space;M&space;_{22}&space;y&space;&plus;&space;M&space;_{23})" title="https://latex.codecogs.com/svg.image?dst (x,y) = src ( M_{11} x + M_{12} y + M_{13}, M_{21} x + M_{22} y + M_{23})" />
 
+As you can see the relation between input and output is completely linear. When you apply affine transform on an image, the size of output image might be different and you have to specify the size
+
+`cv::warpAffine( src, dst,  affine_mat, cv::Size2d(width,heigh) );`
 
 For Scaling, you can call `cv::resize`
 

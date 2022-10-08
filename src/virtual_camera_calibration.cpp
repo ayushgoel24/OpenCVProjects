@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
-
+#include <opencv2/core/types.hpp>
 
 double computeReprojectionErrors( const std::vector<std::vector<cv::Point3f> >& objectPoints,
                           const std::vector<std::vector<cv::Point2f> >& imagePoints,
@@ -88,10 +88,10 @@ void camera_calibration_example(cv::Mat &camera_matrix, cv::Mat &distortion_coef
     while(successes<numBoards)
     {
         cvtColor(image, gray_image, cv::COLOR_BGR2GRAY);
-        bool found = findChessboardCorners(image, board_sz, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
+        bool found = findChessboardCorners(image, board_sz, corners, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FILTER_QUADS);
         if(found)
         {
-            cv::cornerSubPix(gray_image, corners, cv::Size(11, 11), cv::Size(-1, -1), cv::TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
+            cv::cornerSubPix(gray_image, corners, cv::Size(11, 11), cv::Size(-1, -1), cv::TermCriteria(cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS, 30, 0.1));
             //drawChessboardCorners(gray_image, board_sz, corners, found);
             drawChessboardCorners(image, board_sz, corners, found);
         }
@@ -165,7 +165,7 @@ void camera_calibration_example(cv::Mat &camera_matrix, cv::Mat &distortion_coef
             r = rvecs[i].t();
             t = tvecs[i].t();
         }
-        cvWriteComment( *fs, "a set of 6-tuples (rotation vector + translation vector) for each view", 0 );
+        //cv::FileStorage::writeComment( *fs, "a set of 6-tuples (rotation vector + translation vector) for each view", 0 );
         fs << "extrinsic_parameters" << bigmat;
     }
 }

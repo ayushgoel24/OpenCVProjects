@@ -174,6 +174,35 @@ to access the same point if x=column and y=row
         projectedPointsHomogenous.at<double>(2,j)=1;
     }
 
+/*
+The inverse of a 3x3 matrix:
+| a11 a12 a13 |-1
+| a21 a22 a23 |    =  1/DET * A^-1
+| a31 a32 a33 |
+ 
+with A^-1  =
+ 
+|  a33a22-a32a23  -(a33a12-a32a13)   a23a12-a22a13 |
+|-(a33a21-a31a23)   a33a11-a31a13  -(a23a11-a21a13)|
+|  a32a21-a31a22  -(a32a11-a31a12)   a22a11-a21a12 |
+ 
+and DET  =  a11(a33a22-a32a23) - a21(a33a12-a32a13) + a31(a23a12-a22a13)
+ 
+Camera Matrix:
+ 
+|fx 0 cx|
+|0 fy cy|
+|0 0  1 |
+ 
+Rays are  A^-1*p:
+ 
+ 1    |fy 0   -fycx|  |u|
+----- |0  fx -cy*fx| *|v| = [ (u- cx)/fx, (v-cx)/fy, 1]
+fx*fy |0  0   fy*fx|  |1|
+ 
+*/
+
+
     
     cv::Mat rays =cameraMatrix.inv()*projectedPointsHomogenous; //put in world coordinates
     std::cout<< "camera rays" <<std::endl;

@@ -39,7 +39,7 @@ https://docs.opencv.org/3.4/d4/d61/tutorial_warp_affine.html
 
 
 
-void calculateAndApplyAffineTransformation(int argc, char **argv)
+void createAndApplyAffineTransformation(int argc, char **argv)
 {
     std::string source_window = "Source image";
     std::string warp_window = "Warp";
@@ -89,8 +89,8 @@ void calculateAndApplyAffineTransformation(int argc, char **argv)
     */
 
     dstTri[0] = cv::Point2f( src.cols*0.0, src.rows*0.33 ); //dst Top left
-    dstTri[1] =cv::Point2f( src.cols*0.85, src.rows*0.25 ); //dst Top right
-    dstTri[2] =cv::Point2f( src.cols*0.15, src.rows*0.7 ); //dst Bottom left offset
+    dstTri[1] = cv::Point2f( src.cols*0.85, src.rows*0.25 ); //dst Top right
+    dstTri[2] = cv::Point2f( src.cols*0.15, src.rows*0.7 ); //dst Bottom left offset
 
     // Get the Affine Transform
     warp_mat = cv::getAffineTransform( srcTri, dstTri );
@@ -129,16 +129,24 @@ void createAffineMatrixExample(int argc, char **argv)
 
     /// Compute a rotation matrix with respect to the center of the image
     cv::Point center = cv::Point( src.cols/2, src.rows/2 );
-    double angle = -50.0;
-    double scale = 0.6;
+    //angle should be in degree
+    double angle = M_PI/4 * 180/M_PI;
+    double scale = 1.0;
 
-    /// Get the rotation matrix with the specifications above
+    /* Get the rotation matrix with the specifications above, the center will determine the value of last column 
+        because we are determining where the reference for rotation should be so we have a translation
+    */
     rot_mat = cv::getRotationMatrix2D( center, angle, scale );
+    //rot_mat = cv::getRotationMatrix2D( cv::Point(0.0), angle, scale );
+    
 
     std::cout<<"rot+scale matrix is: \n" <<rot_mat <<std::endl;
 
     /// Rotate the warped image
-    cv::warpAffine( src, warp_dst,  rot_mat, warp_dst.size() );
+    cv::Size2d(warp_dst.size().height, warp_dst.size().width );
+    //cv::warpAffine( src, warp_dst,  rot_mat, warp_dst.size() );
+    cv::warpAffine( src, warp_dst,  rot_mat, cv::Size2d(warp_dst.size().width*2, warp_dst.size().height*2 ) );
+    
 
     /// Show what you got
     std::string source_window = "Source image";
@@ -168,7 +176,7 @@ int main(int argc, char** argv)
         std::cout <<" Usage: ./affine_transform <image> \n"<< std::endl;
         return -1;
     }
-    calculateAndApplyAffineTransformation(argc, argv);
+    createAndApplyAffineTransformation(argc, argv);
     createAffineMatrixExample(argc, argv);
 
     return 0;

@@ -174,9 +174,6 @@ add_executable(affine_transformation src/affine_transformation.cpp)
 target_link_libraries(affine_transformation ${OpenCV_LIBS} )
 
 
-add_executable(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
-target_link_libraries(fundamental_matrix_estimation ${OpenCV_LIBS} )
-
 add_executable(icp src/icp.cpp)
 target_link_libraries(icp ${OpenCV_LIBS} )
 
@@ -210,6 +207,9 @@ target_link_libraries(tracking_objects_by_color ${OpenCV_LIBS} )
 add_executable(essential_matrix_estimation src/essential_matrix_estimation.cpp)
 target_link_libraries(essential_matrix_estimation ${OpenCV_LIBS} )
 
+add_executable(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
+target_link_libraries(fundamental_matrix_estimation ${OpenCV_LIBS} )
+
 add_executable(image_morphe src/image_morphe.cpp)
 target_link_libraries(image_morphe ${OpenCV_LIBS} )
 
@@ -222,8 +222,8 @@ target_link_libraries(structured_light_range_finding ${OpenCV_LIBS} )
 add_executable(convolution src/convolution.cpp)
 target_link_libraries(convolution ${OpenCV_LIBS} )
 
-add_executable(camera_calibration src/camera_calibration.cpp)
-target_link_libraries(camera_calibration ${OpenCV_LIBS} )
+add_executable(virtual_camera_calibration src/virtual_camera_calibration.cpp)
+target_link_libraries(virtual_camera_calibration ${OpenCV_LIBS} )
 
 
 add_executable(rodrigue_rotation_matrices src/rodrigue_rotation_matrices.cpp)
@@ -236,14 +236,18 @@ target_link_libraries(projection_camera_intrinsic ${OpenCV_LIBS} pthread )
 add_executable(homography src/homography.cpp)
 target_link_libraries(homography ${OpenCV_LIBS} )
 
-#add_executable(camera_calibration_example src/camera_calibration_example.cpp)
-#target_link_libraries(camera_calibration_example ${OpenCV_LIBS} )
-
-#add_executable(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
-#target_link_libraries(fundamental_matrix_estimation ${OpenCV_LIBS} )
-
 add_executable(perspective_projection src/perspective_projection.cpp)
 target_link_libraries(perspective_projection ${OpenCV_LIBS} )
+
+
+add_executable(undistort src/undistort.cpp)
+target_link_libraries(undistort ${OpenCV_LIBS} )
+
+add_executable(remap src/remap.cpp)
+target_link_libraries(remap ${OpenCV_LIBS} )
+
+
+
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/src/sandbox.cpp")
     add_executable(sandbox src/sandbox.cpp)
