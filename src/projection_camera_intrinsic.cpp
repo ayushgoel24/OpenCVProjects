@@ -6,6 +6,22 @@ void projection(std::string pathToPointFile="../data/points.csv")
 {
 
 /*
+    image's points in opencv has the follow index:
+	(0,0) (1,0) (2,0) 3,0)
+	(0,1) (1,1) (2,1) 3,1)
+	(0,2) (1,2) (2,2) 3,2)
+
+            X           (cols,0)
+            -------------►
+            |
+          y |
+            |
+    (0,rows)▼           (cols,rows)
+
+*/
+
+
+/*
 Points are in the following form (OpenCV coordinate):
  
                   Z

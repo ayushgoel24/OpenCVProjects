@@ -1,4 +1,4 @@
-# Graphical projection
+# Graphical Projection
 
 There are two graphical projection categories:
 
@@ -10,7 +10,7 @@ There are two graphical projection categories:
 
 
 
-# Pinhole camera model
+# Pinhole Camera Model
 
 the coordinates  of point <img src="https://latex.codecogs.com/svg.image?Q(x,y)" title="https://latex.codecogs.com/svg.image?Q(x,y)" /> depend on the coordinates of point <img src="https://latex.codecogs.com/svg.image?P(X_w,Y_w,Z_w)" title="https://latex.codecogs.com/svg.image?P(X_w,Y_w,Z_w)" /> 
 
@@ -28,14 +28,14 @@ Refs: [1](https://en.wikipedia.org/wiki/Pinhole_camera_model#Geometry),
 [2](https://ksimek.github.io/2013/08/13/intrinsic/),
 
 
-# Rotated image and the virtual image plane
+# Rotated Image and the Virtual Image Plane
 
 The mapping from 3D to 2D coordinates described by a pinhole camera is a perspective projection followed by a `180°` rotation in the image plane. This corresponds to how a real pinhole camera operates; the resulting image is rotated `180°` and the relative size of projected objects depends on their distance to the focal point and the overall size of the image depends on the distance f between the image plane and the focal point. In order to produce an unrotated image, which is what we expect from a camera we Place the image plane so that it intersects the <img src="https://latex.codecogs.com/svg.image?Z" title="https://latex.codecogs.com/svg.image?Z" /> axis at `f` instead of at `-f` and rework the previous calculations. This would generate a virtual (or front) image plane which cannot be implemented in practice, but provides a theoretical camera which may be simpler to analyse than the real one.
 
 
-# Camera resectioning and projection matrix 
+# Camera Resectioning and Projection Matrix 
 
-Projection referrs to the pinhole camera model, a camera matrix <img src="https://latex.codecogs.com/svg.image?\text{M}" title="https://latex.codecogs.com/svg.image?\text{M}" /> is used to denote a projective mapping from world coordinates to pixel coordinates.
+Projection refers to the pinhole camera model, a camera matrix <img src="https://latex.codecogs.com/svg.image?\text{M}" title="https://latex.codecogs.com/svg.image?\text{M}" /> is used to denote a projective mapping from world coordinates to pixel coordinates.
 
 
 
@@ -106,10 +106,6 @@ for(const auto p:projectedPoints)
 ```
 
 ![pinhole_camera_model](images/pinhole_camera_model.png)
-
-
-# Weak perspective projection
-
 
 
 

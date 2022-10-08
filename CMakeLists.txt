@@ -149,6 +149,9 @@ endif()
 add_executable(basic_operations src/basic_operations.cpp)
 target_link_libraries(basic_operations ${OpenCV_LIBS} )
 
+add_executable(coordinate_system_points src/coordinate_system_points.cpp)
+target_link_libraries(coordinate_system_points ${OpenCV_LIBS} )
+
 add_executable(hough_transform src/hough_transform.cpp)
 target_link_libraries(hough_transform ${OpenCV_LIBS} )
 
@@ -210,9 +213,6 @@ target_link_libraries(essential_matrix_estimation ${OpenCV_LIBS} )
 add_executable(fundamental_matrix_estimation src/fundamental_matrix_estimation.cpp)
 target_link_libraries(fundamental_matrix_estimation ${OpenCV_LIBS} )
 
-add_executable(image_morphe src/image_morphe.cpp)
-target_link_libraries(image_morphe ${OpenCV_LIBS} )
-
 add_executable(triangulation src/triangulation.cpp)
 target_link_libraries(triangulation ${OpenCV_LIBS} )
 
@@ -236,12 +236,15 @@ target_link_libraries(projection_camera_intrinsic ${OpenCV_LIBS} pthread )
 add_executable(homography src/homography.cpp)
 target_link_libraries(homography ${OpenCV_LIBS} )
 
-add_executable(perspective_projection src/perspective_projection.cpp)
-target_link_libraries(perspective_projection ${OpenCV_LIBS} )
+add_executable(perspective_transformation src/perspective_transformation.cpp)
+target_link_libraries(perspective_transformation ${OpenCV_LIBS} )
 
 
-add_executable(undistort src/undistort.cpp)
-target_link_libraries(undistort ${OpenCV_LIBS} )
+add_executable(undistorting_images src/undistorting_images.cpp)
+target_link_libraries(undistorting_images ${OpenCV_LIBS} )
+
+add_executable(rectifying_images src/rectifying_images.cpp)
+target_link_libraries(rectifying_images ${OpenCV_LIBS} )
 
 add_executable(remap src/remap.cpp)
 target_link_libraries(remap ${OpenCV_LIBS} )
