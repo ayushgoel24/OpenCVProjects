@@ -49,63 +49,182 @@ Projection refers to the pinhole camera model, a camera matrix <img src="https:/
 
 <img src="https://latex.codecogs.com/svg.image?{\displaystyle&space;K={\begin{bmatrix}f_{x}&\gamma&space;&c_{x}&0\\0&f_{y}&c_{y}&0\\0&0&1&0\end{bmatrix}}}" title="https://latex.codecogs.com/svg.image?{\displaystyle K={\begin{bmatrix}f_{x}&\gamma &c_{x}&0\\0&f_{y}&c_{y}&0\\0&0&1&0\end{bmatrix}}}" />
 
+<br/>
+<br/>
 
 
-- <img src="https://latex.codecogs.com/svg.image?mx=\frac{1}{\text{Width}}=\frac{&space;\text{Number&space;of&space;Pixel&space;In&space;Width}}{\text{Width&space;of&space;Sensor}&space;&space;}" title="https://latex.codecogs.com/svg.image?mx=\frac{1}{\text{Width}}=\frac{ \text{Number of Pixel In Width}}{\text{Width of Sensor} }" />    
+<img src="https://latex.codecogs.com/svg.image?mx=\frac{&space;\text{Number&space;of&space;Pixel&space;In&space;Width}}{\text{Width&space;of&space;Sensor}}=\frac{1}{\text{Width&space;of&space;Pixel}" title="https://latex.codecogs.com/svg.image?mx=\frac{ \text{Number of Pixel In Width}}{\text{Width of Sensor}}=\frac{1}{\text{Width of Pixel}" />
+
+<br/>
+<br/>
+
+
+<img src="https://latex.codecogs.com/svg.image?my=\frac{&space;\text{Number&space;of&space;Pixel&space;In&space;Heigh}}{\text{Height&space;of&space;Sensor}}=\frac{1}{\text{Height&space;of&space;Pixel}" title="https://latex.codecogs.com/svg.image?my=\frac{ \text{Number of Pixel In Heigh}}{\text{Height of Sensor}}=\frac{1}{\text{Height of Pixel}" />
+
+<br/>
+<br/>
+
+<img src="https://latex.codecogs.com/svg.image?cy=\frac{&space;\text{Number&space;of&space;Pixel&space;In&space;Height}}{\text{2}}" title="https://latex.codecogs.com/svg.image?cy=\frac{ \text{Number of Pixel In Height}}{\text{2}}" />    
+
+
+<br/>
+<br/>
+
+
+<img src="https://latex.codecogs.com/svg.image?cx=\frac{&space;\text{Number&space;of&space;Pixel&space;In&space;Width}}{\text{2}}" title="https://latex.codecogs.com/svg.image?cx=\frac{ \text{Number of Pixel In Width}}{\text{2}}" />    
+
+<br/>
+<br/>
+
+
+<img src="https://latex.codecogs.com/svg.image?f_x=f\times&space;m_x" title="https://latex.codecogs.com/svg.image?f_x=f\times m_x" />
+
+
+<br/>
+<br/>
+
+<img src="https://latex.codecogs.com/svg.image?f_y=f\times&space;m_y" title="https://latex.codecogs.com/svg.image?f_y=f\times m_y" />
 
 
 
+<br/>
+<br/>
 
 
-- <img src="https://latex.codecogs.com/svg.image?my=\frac{1}{\text{Height}}=\frac{&space;\text{Number&space;of&space;Pixel&space;In&space;Height}}{\text{Height&space;of&space;Sensor}}" title="https://latex.codecogs.com/svg.image?my=\frac{1}{\text{Height}}=\frac{ \text{Number of Pixel In Height}}{\text{Height of Sensor}}" />    
+<img src="https://latex.codecogs.com/svg.image?\text{column}&space;=f_x\frac{X}{Z}&space;&plus;cx" title="https://latex.codecogs.com/svg.image?\text{column} =f_x\frac{X}{Z} +cx" />
+
+<br/>
+<br/>
+
+<img src="https://latex.codecogs.com/svg.image?\text{&space;row}&space;=f_y\frac{Y}{Z}&space;&plus;cy" title="https://latex.codecogs.com/svg.image?\text{ row} =f_y\frac{Y}{Z} +cy" />
+<br/>
+<br/>
+
+# Example of Projection 
+
+
+<img src="https://latex.codecogs.com/svg.image?\text{Number&space;of&space;Pixel&space;In&space;Width=640}" title="https://latex.codecogs.com/svg.image?\text{Number of Pixel In Width=640}" />
+<br/>
+<br/>
+<img src="https://latex.codecogs.com/svg.image?\text{Number&space;of&space;Pixel&space;In&space;Height=480}&space;" title="https://latex.codecogs.com/svg.image?\text{Number of Pixel In Height=480} " />
 
 
 
+<br/>
+<br/>
+<img src="https://latex.codecogs.com/svg.image?\text{Height&space;of&space;Sensor=10 mm}&space;" title="https://latex.codecogs.com/svg.image?\text{Height of Sensor=10 mm} " />
+
+<br/>
+<br/>
+
+<img src="https://latex.codecogs.com/svg.image?\text{Width&space;of&space;Sensor=10&space;mm}&space;" title="https://latex.codecogs.com/svg.image?\text{Width of Sensor=10 mm} " />
+
+<br/>
+<br/>
+
+<img src="https://latex.codecogs.com/svg.image?\text{f=0.1}&space;" title="https://latex.codecogs.com/svg.image?\text{f=0.1} " />
+<br/>
+<br/>
 
 
-- <img src="https://latex.codecogs.com/svg.image?cy=\frac{&space;\text{Number&space;of&space;Pixel&space;In&space;Height}}{\text{2}}" title="https://latex.codecogs.com/svg.image?cy=\frac{ \text{Number of Pixel In Height}}{\text{2}}" />    
+<img src="https://latex.codecogs.com/svg.image?\text{Points&space;in&space;Camera&space;Coordinate=}\begin{bmatrix}&space;0&&space;2&space;&&space;1&space;&&space;&space;2&&space;3&space;&&space;2&&space;2\\&space;0&&space;1&space;&&space;2&space;&&space;&space;2&space;&&space;2&&space;3&space;&&space;4\\&space;0&&space;1&space;&&space;1&space;&&space;&space;1&&space;1&&space;1&space;&&space;1\\\end{bmatrix}&space;&space;" title="https://latex.codecogs.com/svg.image?\text{Points in Camera Coordinate=}\begin{bmatrix} 0& 2 & 1 & 2& 3 & 2& 2\\ 0& 1 & 2 & 2 & 2& 3 & 4\\ 0& 1 & 1 & 1& 1& 1 & 1\\\end{bmatrix} " />
 
 
+<br/>
+<br/>
+<img src="https://latex.codecogs.com/svg.image?cy=\frac{480}{2}=240" title="https://latex.codecogs.com/svg.image?cy=\frac{480}{2}=240" />
+<br/>
+<br/>
 
 
-- <img src="https://latex.codecogs.com/svg.image?cx=\frac{&space;\text{Number&space;of&space;Pixel&space;In&space;Width}}{\text{2}}" title="https://latex.codecogs.com/svg.image?cx=\frac{ \text{Number of Pixel In Width}}{\text{2}}" />    
+<img src="https://latex.codecogs.com/svg.image?cx=\frac{640}{2}=320" title="https://latex.codecogs.com/svg.image?cx=\frac{640}{2}=320" />
+<br/>
+<br/>
 
- 
- In OpenCV, `Point(x,y)` and in the in the following figure <img src="https://latex.codecogs.com/svg.image?\text{x&space;or&space;u}" title="https://latex.codecogs.com/svg.image?\text{x or u}" /> means <img src="https://latex.codecogs.com/svg.image?\text{column}" title="https://latex.codecogs.com/svg.image?\text{column}" /> and <img src="https://latex.codecogs.com/svg.image?\text{y&space;or&space;v}" title="https://latex.codecogs.com/svg.image?\text{y or v}" /> means  <img src="https://latex.codecogs.com/svg.image?\text{row}" title="https://latex.codecogs.com/svg.image?\text{row}" /> (reverse of what is in the picture!)
+<img src="https://latex.codecogs.com/svg.image?fx=0.1&space;\times&space;\frac{640}{10}=6.4" title="https://latex.codecogs.com/svg.image?fx=0.1 \times \frac{640}{10}=6.4" />
+
+<br/>
+<br/>
+<img src="https://latex.codecogs.com/svg.image?fy=0.1&space;\times&space;\frac{240}{10}=2.4" title="https://latex.codecogs.com/svg.image?fy=0.1 \times \frac{240}{10}=2.4" />
+
+<br/>
+<br/>
+
+<img src="https://latex.codecogs.com/svg.image?K=\begin{bmatrix}6.4&space;&&space;0&space;&space;&&space;320&space;&space;\\0,&space;&&space;4.8&space;&&space;240&space;\\0&space;&space;&&space;0&space;&space;&&space;1&space;\\\end{bmatrix}&space;" title="https://latex.codecogs.com/svg.image?K=\begin{bmatrix}6.4 & 0 & 320 \\0, & 4.8 & 240 \\0 & 0 & 1 \\\end{bmatrix} " />
+
+
+<br/>
+<br/>
+
+
+projected pints in camera:
+
+<br/>
+<br/>
+<img src="https://latex.codecogs.com/svg.image?\text{Projectd&space;Points&space;Camera&space;Plane=}\begin{bmatrix}\text{column&space;}\\\text{row&space;}\\1\end{bmatrix}&space;=\begin{bmatrix}320&space;&&space;332.8&space;&&space;326.4&space;&&space;332.8&space;&&space;339.2&space;&&space;332.8&space;&&space;332.8\\&space;240&space;&&space;244.8&space;&&space;249.6&space;&&space;249.6&space;&&space;249.6&space;&&space;254.4&space;&&space;259.2\\&space;1&space;&&space;1&space;&&space;1&space;&&space;1&space;&&space;1&space;&&space;1&space;&&space;1\\\end{bmatrix}&space;&space;" title="https://latex.codecogs.com/svg.image?\text{Projectd Points Camera Plane=}\begin{bmatrix}\text{column }\\\text{row }\\1\end{bmatrix} =\begin{bmatrix}320 & 332.8 & 326.4 & 332.8 & 339.2 & 332.8 & 332.8\\ 240 & 244.8 & 249.6 & 249.6 & 249.6 & 254.4 & 259.2\\ 1 & 1 & 1 & 1 & 1 & 1 & 1\\\end{bmatrix} " />
+
+<br/>
+<br/>
+
+![pinhole_camera_model](images/pinhole_camera_model.png)
+
+<br/>
+<br/>
+
+<img src="images/image_0.100000_.jpg">
+
+
+# OpenCV API
+
+In OpenCV, `Point(x=coulmn,y=row)`. For instance the point in the following image can be accessed with
+
+```cpp
+    X                      
+    --------column---------►
+    | Point(0,0) Point(1,0) Point(2,0) Point(3,0)
+    | Point(0,1) Point(1,1) Point(2,1) Point(3,1)
+    | Point(0,2) Point(1,2) Point(2,2) Point(3,2)
+  y |
+   row
+    |
+    |
+    ▼
+
+```
+However if you access an image directly, the order is <img src="https://latex.codecogs.com/svg.image?\text{(row,&space;column)}" title="https://latex.codecogs.com/svg.image?\text{(row, column)}" />
+
+```cpp
+    X                      
+    --------column---------►
+    | mat.at<type>(0,0) mat.at<type>(0,1) mat.at<type>(0,2) mat.at<type>(0,3)
+    | mat.at<type>(1,0) mat.at<type>(1,1) mat.at<type>(1,2) mat.at<type>(1,3)
+    | mat.at<type>(2,0) mat.at<type>(2,1) mat.at<type>(2,2) mat.at<type>(2,3)
+  y |
+   row
+    |
+    |
+    ▼
+```    
+
+
+So the following will return the same value:
+
 
 
 ```cpp
-Point(x,y) represent (column,row)
-
-mat.at<type>(row,column) or mat.at<type>(cv::Point(x,y))
-to access the same point if x=column and y=row
-
-
-0/0---column--->
- |
- |
-row
- |
- |
- v
+mat.at<type>(row,column) 
+mat.at<type>(cv::Point(column,row))
+```
+For instance:
+```cpp
+std::cout<<static_cast<unsigned>(img.at<uchar>(row,column))    <<std::endl;
+std::cout<<static_cast<unsigned>(img.at<uchar>( cv::Point(column,row))     )<<std::endl;
 ```
 
 
 
-```cpp 
 
-std::vector<cv::Point3d> objectpoints;
-objectpoints.push_back(cv::Point3d(8,-4,2));
-objectpoints.push_back(cv::Point3d(4,-2,1));
-objectpoints.push_back(cv::Point3d(0,0,1));
 
-cv::projectPoints(objectpoints, cameraRotation, cameraTranslation, cameraMatrix, distortionCoefficient, projectedPoints);
-std::cout<< "projected point in camera" <<std::endl;
-for(const auto p:projectedPoints)
-	std::cout<<"column:" <<p.x <<"," <<"row:"<<p.y <<std::endl;
-```
-
-![pinhole_camera_model](images/pinhole_camera_model.png)
 
 
 

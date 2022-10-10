@@ -49,6 +49,22 @@ Decentering distortion is a result of the lens assembly not being centered over 
 
 
 
+<img src="images/radial-and-tangential-distortion.png" height="270" width="350"/>
+
+[image courtesy](https://www.researchgate.net/publication/260728375_Laboratory_calibration_of_star_sensor_with_installation_error_using_a_nonlinear_distortion_model)
+
+
+<br/>
+<br/>
+
+
+
+### Lens Chromatic Aberration
+
+
+<img src="images/lens_chromatic_aberration.png" height="250" width="250"/>
+
+
 ## Distortion Models
 
 ### Brown-Conrady

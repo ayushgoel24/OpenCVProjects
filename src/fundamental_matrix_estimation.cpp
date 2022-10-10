@@ -1,17 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-//https://www8.cs.umu.se/kurser/TDBD19/VT05/reconstruct-4.pdf
-//http://www.robots.ox.ac.uk/~vgg/hzbook/code/
-
-
-
-
-
-
-
-
-
-void estimatFundamentalMatrix()
+void estimateFundamentalMatrix()
 {
 
     int numBoards = 0; //minimum 4
@@ -182,9 +171,118 @@ void estimatFundamentalMatrix()
 
 }
 
+void findFundamentalMatrix(std::vector<cv::Point2d>&imagePointsLeftCamera,std::vector<cv::Point2d>&imagePointsRightCamera)
+{
+    std::vector<cv::Point3d> imagePointsLeftCameraHomogeneous,imagePointsRightCameraHomogeneous;
+    cv::convertPointsToHomogeneous(imagePointsLeftCamera,imagePointsLeftCameraHomogeneous);
+    cv::convertPointsToHomogeneous(imagePointsRightCamera,imagePointsRightCameraHomogeneous);
+/*
 
+   ┌       ┐ ┌f11  f12  f13┐ ┌u┐
+   |u` v` 1|*|f21  f22  f23|*|v|=0
+   └       ┘ └f31  f32  f33┘ └1┘
+
+   ┌u'1u1   u'1v1   u'1   v'1u1   v'1v1   v'1   u1   v1   1┐   ┌f11┐
+   |u'2u2   u'2v2   u'2   v'2u2   v'2v2   v'2   u2   v2   1|   |f12|
+   |u'3u3   u'3v3   u'3   v'3u3   v'3v3   v'3   u3   v3   1|   |f13|
+   |u'4u4   u'4v4   u'4   v'4u4   v'4v4   v'4   u4   v4   1|   |f21|
+   |u'5u5   u'5v5   u'5   v'5u5   v'5v5   v'5   u5   v5   1| * |f22|=0
+   |u'6u6   u'6v6   u'6   v'6u6   v'6v6   v'6   u6   v6   1|   |f23|
+   |u'7u7   u'7v7   u'7   v'7u7   v'7v7   v'7   u7   v7   1|   |f31|
+   └u'8u8   u'8v8   u'8   v'8u8   v'8v8   v'8   u8   v8   1┘   |f32|
+                                                               └f33┘
+*/
+    double u_prime, v_prime, u,v;
+    cv::Mat A=cv::Mat_<double>(imagePointsLeftCamera.size(),9);
+    for(int i=0;i<imagePointsLeftCamera.size();i++)
+    {
+        u_prime=imagePointsLeftCamera.at(i).x;
+        v_prime=imagePointsLeftCamera.at(i).y;
+
+        u=imagePointsRightCamera.at(i).x;
+        v=imagePointsRightCamera.at(i).y;
+
+        A.at<double>(i,0)=u_prime*u;
+        A.at<double>(i,1)=u_prime*v;
+        A.at<double>(i,2)=u_prime;
+        A.at<double>(i,3)=v_prime*u;
+        A.at<double>(i,4)=v_prime*v;
+        A.at<double>(i,5)=v_prime;
+        A.at<double>(i,6)=u;
+        A.at<double>(i,7)=v;
+        A.at<double>(i,8)=1;
+
+    }
+
+    cv::Mat U,SingularValuesVector , VT;
+    cv::Mat SigmaMatrix=cv::Mat::zeros(A.rows,A.cols,CV_64F);
+    cv::SVD::compute(A.clone(), SingularValuesVector,U,VT);
+
+//////////////////////////////////Buliding U (Buliding Square Matrix U)///////////////////////////////////
+
+    cv::Mat completeU=cv::Mat_<double>(U.rows,U.rows);
+    cv::Mat missingElementsOfU=cv::Mat::zeros(U.rows,U.rows-U.cols,CV_64F);
+    cv::hconcat(U,missingElementsOfU,completeU);
+
+//////////////////////////////////Buliding Sigma Matrix ///////////////////////////////////
+
+    cv::Mat completeSigma=cv::Mat::zeros(completeU.cols,VT.rows,CV_64F);
+    for(std::size_t i=0;i<SingularValuesVector.rows;i++)
+    {
+        completeSigma.at<double>(i,i)=SingularValuesVector.at<double>(i,0);
+    }
+
+
+//////////////////////////////////Checking A=completeU*completeSigma*Vt ///////////////////////////////////
+
+    std::cout<< "checking A-U*Sigma*VT=0"  <<std::endl;
+    std::cout<< cv::sum(A-completeU*completeSigma*VT).val[0] <<std::endl;
+
+///////////////////////////////////Building F Matrix From F vector /////////////////////////////////////////////
+    cv::Mat F_vec=VT.col(VT.cols-1  );
+    std::cout<< F_vec.cols<<std::endl;
+    cv::Mat F=cv::Mat(3,3,cv::DataType<double>::type);
+
+    F.at<double>(0,0)=F_vec.at<double>(0,0);
+    F.at<double>(0,1)=F_vec.at<double>(1,0);
+    F.at<double>(0,2)=F_vec.at<double>(2,0);
+    F.at<double>(1,0)=F_vec.at<double>(3,0);
+    F.at<double>(1,1)=F_vec.at<double>(4,0);
+    F.at<double>(1,2)=F_vec.at<double>(5,0);
+    F.at<double>(2,0)=F_vec.at<double>(6,0);
+    F.at<double>(2,1)=F_vec.at<double>(7,0);
+    F.at<double>(2,2)=F_vec.at<double>(8,0);
+
+///////////////////////////////////Computing SVD of F /////////////////////////////////////////////
+
+    cv::SVD::compute(F.clone(), SingularValuesVector,U,VT);
+    std::cout<< "F singular values" <<std::endl;
+    std::cout<< SingularValuesVector <<std::endl;
+
+///////////////////////////////////Setting The Smallest Eigen Value to Zero/////////////////////////////////////////////
+    SingularValuesVector.at<double>(SingularValuesVector.rows-1,0)=0;
+
+//////////////////////////////////Buliding U (Buliding Square Matrix U)///////////////////////////////////
+
+    completeU=cv::Mat_<double>(U.rows,U.rows);
+    missingElementsOfU=cv::Mat::zeros(U.rows,U.rows-U.cols,CV_64F);
+    cv::hconcat(U,missingElementsOfU,completeU);
+
+//////////////////////////////////Buliding Sigma Matrix ///////////////////////////////////
+
+    completeSigma=cv::Mat::zeros(completeU.cols,VT.rows,CV_64F);
+    for(std::size_t i=0;i<SingularValuesVector.rows;i++)
+    {
+        completeSigma.at<double>(i,i)=SingularValuesVector.at<double>(i,0);
+    }
+/////////////////////////////////////Building New F matrix///////////////////////////////////////
+
+    cv::Mat NewF=completeU*completeSigma*VT;
+    std::cout<< "Fundamental Matrix is:"<<std::endl;
+    std::cout<< NewF<<std::endl;
+}
 
 int main(int argc, char ** argv11)
 {
-    estimatFundamentalMatrix();
+    estimateFundamentalMatrix();
 }

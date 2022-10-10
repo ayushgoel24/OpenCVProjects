@@ -72,9 +72,6 @@ read more [here](https://ros-developer.com/2017/11/08/docker/)
 [Photogrammetry](docs/photogrammetry.md)  
 [Structure From Motion](docs/structure_from_motion.md)  
 [Parallax](docs/parallax.md)  
-
-
-
 [Optical Flow](docs/optical_flow.md)  
 [Visual Odometry](visual_odometry.md)  
 [Ego Motion](docs/ego-motion.md)  

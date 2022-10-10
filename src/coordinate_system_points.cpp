@@ -2,10 +2,7 @@
 
 
 /*
-OpenCV coordinate:
-
-In OpenCV, cv::Point(x,y) represent (column,row)
-x (or u) means column and y (or v) means row
+OpenCV camera coordinate:
  
                   Z
                 ▲
@@ -20,21 +17,49 @@ x (or u) means column and y (or v) means row
             | y or v means row
             ⯆
 
-mat.at<type>(row,column) or mat.at<type>(cv::Point(x,y))
-to access the same point if x=column and y=row
 
 
 
-0/0---column--->
- |
- |
-row
- |
- |
- v
+In OpenCV, Point(x=column,y=row). For instance the point in the following image can be accessed with
 
+    X                      
+    --------column---------►
+    | Point(0,0) Point(1,0) Point(2,0) Point(3,0)
+    | Point(0,1) Point(1,1) Point(2,1) Point(3,1)
+    | Point(0,2) Point(1,2) Point(2,2) Point(3,2)
+  y |
+   row
+    |
+    |
+    ▼
+
+    However if you access an image directly, the order is mat.at<type>(row,column). So the following will return the same value:
+    mat.at<type>(row,column) 
+    mat.at<type>(cv::Point(column,row))
+
+    X                      
+    --------column---------►
+    | mat.at<type>(0,0) mat.at<type>(0,1) mat.at<type>(0,2) mat.at<type>(0,3)
+    | mat.at<type>(1,0) mat.at<type>(1,1) mat.at<type>(1,2) mat.at<type>(1,3)
+    | mat.at<type>(2,0) mat.at<type>(2,1) mat.at<type>(2,2) mat.at<type>(2,3)
+  y |
+   row
+    |
+    |
+    ▼
 */    
+void imageCoordinateVSPoint(int argc, char** argv)
+{
+    cv::Mat img=cv::imread(argv[1],cv::IMREAD_GRAYSCALE );
+    //img1 type will be CV_8UC1
+    int row, column;
 
+    row=50;
+    column=200;
+
+    std::cout<<static_cast<unsigned>(img.at<uchar>(row,column))    <<std::endl;
+    std::cout<<static_cast<unsigned>(img.at<uchar>( cv::Point(column,row))     )<<std::endl;
+}
 
 void coordinateSystemDisplay()
 {
@@ -43,36 +68,40 @@ void coordinateSystemDisplay()
     blue=255;
     green=255;
     red=255;
-    int rows, cols;
+    int numberOfRows, numberOfCols;
 
-    rows=400;
-    cols=600;
+    numberOfRows=480;
+    numberOfCols=640;
 
-    cv::Mat img = cv::Mat::zeros(rows,cols, CV_8UC1);
-    std::cout<<"rows:" <<img.rows  <<std::endl;
-    std::cout<<"cols:" <<img.cols  <<std::endl;
-    std::string windowTitle="OpenCV Coordinate System";
-    cv::namedWindow(windowTitle,cv::WINDOW_AUTOSIZE);
-    
+    cv::Mat img = cv::Mat::zeros(numberOfRows,numberOfCols, CV_8UC3);
+    std::cout<<"number of rows:" <<img.rows  <<std::endl;
+    std::cout<<"number of cols:" <<img.cols  <<std::endl;
 
+    int row, column;
 
-    // draw a circle at (300,300) with a radius of 20. Use green lines of width 1
-    cv::circle(img, cv::Point( 300,100), 20, cv::Scalar(blue,green,red), 1);
+    row=140;
+    column=10;
 
 
-    cv::Vec3b color;
-    color[0] = blue;
-    color[1] = green;
-    color[2] = red;
+    for(int column=0;column<img.cols;column++)
+    {
+        //img.at<cv::Vec3b>( row, column)=cv::Vec3b(blue,green,red);
+        img.at<cv::Vec3b>( cv::Point( column,row))=cv::Vec3b(blue,green,red);
+        cv::imwrite( "row_"+std::to_string(row) + "_cols_" +std::to_string(column) +".png"  ,img);
+    }
 
-    img.at<cv::Vec3b>( cv::Point( 300,100))=cv::Vec3f(blue,green,red);
+
+    // for(int row=0;row<img.rows;row++)
+    // {
+    //     img.at<cv::Vec3b>( cv::Point( column,row))=cv::Vec3f(blue,green,red);
+    //     //img.at<cv::Vec3b>( row, column)=cv::Vec3f(blue,green,red);
+    //     cv::imwrite( "row_"+std::to_string(row) + "_cols_" +std::to_string(column) +".png"  ,img);
+    // }
 
 
-    cv::imshow(windowTitle,img);
-    cv::waitKey(0);
 }
 
-int main()
+int main(int argc, char** argv)
 {
     coordinateSystemDisplay();
 }

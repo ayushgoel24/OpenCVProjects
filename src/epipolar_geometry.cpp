@@ -4,6 +4,62 @@
 #include <algorithm>
 
 
+// void computFundamentalMatrixAndDrawEpipolarLines()
+// {
+//     /*
+//     FM_7POINT   7-point algorithm
+//     FM_8POINT   8-point algorithm
+//     FM_LMEDS    least-median algorithm. 7-point algorithm is used.
+//     FM_RANSAC   ANSAC algorithm. It needs at least 15 points. 7-point algorithm is used
+//     */	
+
+//     cv::Mat fundamentalMatrix= cv::findFundamentalMat(imagePointsLeftCamera, imagePointsRightCamera, cv::FM_8POINT);
+//     std::vector<cv::Vec3d> leftLines, rightLines;
+//     cv::computeCorrespondEpilines(imagePointsLeftCamera, 1, fundamentalMatrix, rightLines);
+//     cv::computeCorrespondEpilines(imagePointsRightCamera, 2, fundamentalMatrix, leftLines);
+	
+//     cv::Mat leftImageRGB(leftImage.size(), CV_8UC3);
+//     cv::cvtColor(leftImage, leftImageRGB, CV_GRAY2RGB);
+	
+//     cv::Mat rightImageRGB(rightImage.size(), CV_8UC3);
+//     cv::cvtColor(rightImage, rightImageRGB, CV_GRAY2RGB);
+
+//     cv::Mat imagePointLeftCameraMatrix=cv::Mat_<double>(3,1);
+
+//     for(std::size_t i=0;i<rightLines.size();i=i+1)
+//     {
+//         cv::Vec3d l=rightLines.at(i);
+// 	    double a=l.val[0];
+//         double b=l.val[1];
+//         double c=l.val[2];
+//         std::cout<<"------------------------a,b,c Using OpenCV (ax+by+c=0)------------------------------"<<std::endl;
+//         std::cout<< a <<", "<<b <<", "<<c <<std::endl;
+//         std::cout<<"------------------------calculating a,b,c (ax+by+c=0) ------------------------------"<<std::endl;
+        
+//         imagePointLeftCameraMatrix.at<double>(0,0)=imagePointsLeftCamera[i].x;
+//         imagePointLeftCameraMatrix.at<double>(1,0)=imagePointsLeftCamera[i].y;
+//         imagePointLeftCameraMatrix.at<double>(2,0)=1;
+//         cv::Mat rightLineMatrix=fundamentalMatrix*imagePointLeftCameraMatrix;
+        
+//         std::cout<< rightLineMatrix.at<double>(0,0) <<", "<<rightLineMatrix.at<double>(0,1) <<", "<<rightLineMatrix.at<double>(0,2) <<std::endl;
+
+//         /////////////////////////////////drawing the line on the image/////////////////////////////////
+//         /*ax+by+c=0*/
+//         double x0,y0,x1,y1;
+//         x0=0;
+//         y0=(-c-a*x0)/b;
+// 	x1=rightImageRGB.cols;
+//         y1=(-c-a*x1)/b;
+
+// 	std::cout<<"error: "<< a*imagePointsRightCamera.at(i).x+ b*imagePointsRightCamera.at(i).y +c<<std::endl;
+// 	cv::line(rightImageRGB, cvPoint(x0,y0), cvPoint(x1,y1), cvScalar(0,255,0), 1);
+//     }
+
+//     cv::imwrite("leftImageEpipolarLine.jpg",leftImageRGB);
+
+// }
+
+
 
 
 //http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_calib3d/py_epipolar_geometry/py_epipolar_geometry.html

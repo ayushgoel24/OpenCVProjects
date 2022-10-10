@@ -79,7 +79,7 @@ void createMatrix()
     cv::Mat mat( dims, CV_32FC1);
     std::cout << mat.at<float>(0,0,0);
 
-    //7 Matrices from exsiting data
+    //7 Matrices from existing data
     float data[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     cv::Mat mat_data = cv::Mat(2, 5, CV_32F, data);
 
@@ -110,6 +110,46 @@ void matrixVectorConversion()
     //createing image, merging, spliting channels
 
 }
+
+
+void matrixFromVectorOfCVPoints()
+{
+    std::vector<cv::Point> pixelValue;
+    pixelValue.push_back(cv::Point(320,240));
+    pixelValue.push_back(cv::Point(326.4,249.6));
+    pixelValue.push_back(cv::Point(332.8,249.6));
+    pixelValue.push_back(cv::Point(339.2,249.6));
+    pixelValue.push_back(cv::Point(332.8,254.4));
+    pixelValue.push_back(cv::Point(332.8,259.2));
+
+    cv::Mat pointInCamera = cv::Mat(pixelValue);
+
+    std::cout<<pointInCamera<<std::endl;
+    std::cout<<"rows: "  <<pointInCamera.rows <<std::endl;
+    std::cout<<"cols: " << pointInCamera.cols <<std::endl;
+    std::cout<<"channels: "<<pointInCamera.channels() <<std::endl;
+
+
+    std::vector<cv::Point3d> vertices;
+    vertices.push_back(cv::Point3d(0, 0, 1));
+    vertices.push_back(cv::Point3d(2, 1, 1));
+    vertices.push_back(cv::Point3d(1, 2, 1));
+    vertices.push_back(cv::Point3d(2, 2, 1));
+    vertices.push_back(cv::Point3d(3, 2, 1));
+    vertices.push_back(cv::Point3d(2, 3, 1));
+    vertices.push_back(cv::Point3d(2, 4, 1));
+
+    //reshape(1)  make Nx3 1-channel matrix out of Nx1 3-channel.
+    //t() transpose the Nx3 matrix.
+
+    cv::Mat pointInWorld = cv::Mat(vertices).reshape(1).t();
+    std::cout<<pointInWorld<<std::endl;
+    std::cout<<"rows: "  <<pointInWorld.rows <<std::endl;
+    std::cout<<"cols: " << pointInWorld.cols <<std::endl;
+    std::cout<<"channels: "<<pointInWorld.channels() <<std::endl;
+
+}
+
 
 void matrixOperations()
 {
@@ -242,7 +282,7 @@ void drawingFunsctionAndCoordinate()
     cv::namedWindow("WorkingwitDrawingcommands",cv::WINDOW_AUTOSIZE);
     
     // draw a box with red lines of width 1 between (0,100) and (200,200)
-    cv::rectangle(img, cv::Point(0,100), cv::Point(200,200), cv::Scalar(blue,0,0), 1);
+    cv::rectangle(img, cv::Point(0,100), cv::Point(200,200), cv::Scalar(blue,0,red), 1);
 
     // draw a circle at (300,300) with a radius of 20. Use green lines of width 1
     cv::circle(img, cv::Point( 300,100), 20, cv::Scalar(0,green,0), 1);
@@ -277,6 +317,8 @@ void drawingFunsctionAndCoordinate()
     //	CV_FONT_HERSHEY_TRIPLEX, CV_FONT_HERSHEY_COMPLEX_SMALL,
     //	CV_FONT_HERSHEY_SCRIPT_SIMPLEX, CV_FONT_HERSHEY_SCRIPT_COMPLEX,
 
+
+    //polylines(img, vert, true, Scalar(255)); // or perhaps 0
 
     cv::imshow("WorkingwitDrawingcommands",img);
     cv::waitKey(0);
@@ -492,11 +534,8 @@ int main(int argc, char** argv)
     //drawingFunsctionAndCoordinate();
     //getVideoFromCam();
     //matStructure();
-    manipulatingImageChannels();
+    //manipulatingImageChannels();
     //scalarValues();
     //accessingMatrixElements();
+    matrixFromVectorOfCVPoints();
 }
-
-
-
-

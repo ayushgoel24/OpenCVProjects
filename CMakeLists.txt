@@ -225,6 +225,9 @@ target_link_libraries(convolution ${OpenCV_LIBS} )
 add_executable(virtual_camera_calibration src/virtual_camera_calibration.cpp)
 target_link_libraries(virtual_camera_calibration ${OpenCV_LIBS} )
 
+add_executable(virtual_stereo_vision_cameras src/virtual_stereo_vision_cameras.cpp)
+target_link_libraries(virtual_stereo_vision_cameras ${OpenCV_LIBS} )
+
 
 add_executable(rodrigue_rotation_matrices src/rodrigue_rotation_matrices.cpp)
 target_link_libraries(rodrigue_rotation_matrices ${OpenCV_LIBS} )
