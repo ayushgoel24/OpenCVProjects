@@ -241,7 +241,7 @@ Refs: [1](https://stackoverflow.com/questions/12977980/in-opencv-converting-2d-i
 
 
 
-
+# Resizing Image Effect on the Camera Intrinsic Matrix
 
 
 
