@@ -16,7 +16,6 @@ jobs:
       run: docker build . --file Dockerfile --tag myopencv_image:latest
       
     - name: Run the build process with Docker
-      uses: addnab/docker-run-action@v3
       with:
         image: myopencv_image:latest
         options: -v ${{ github.workspace }}:/OpenCVProjects
