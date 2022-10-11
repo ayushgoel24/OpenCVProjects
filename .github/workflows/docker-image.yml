@@ -20,7 +20,7 @@ jobs:
     - uses: addnab/docker-run-action@v3
       with:
         image: myopencv_image:latest
-        options: --v ${{ github.workspace }}:/OpenCVProjects
+        options: -v ${{ github.workspace }}:/OpenCVProjects
         run: |
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
