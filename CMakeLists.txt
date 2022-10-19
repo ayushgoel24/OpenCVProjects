@@ -256,6 +256,21 @@ add_executable(file_storage_io src/file_storage_io.cpp)
 target_link_libraries(file_storage_io ${OpenCV_LIBS} )
 
 
+find_package (Eigen3 NO_MODULE)
+IF(${EIGEN3_FOUND})
+	MESSAGE("EIGEN3_FOUND: " ${EIGEN3_FOUND})
+	MESSAGE("EIGEN3_INCLUDE_DIR: " ${EIGEN3_INCLUDE_DIR})
+	MESSAGE("EIGEN3_VERSION: " ${EIGEN3_VERSION})
+	MESSAGE("EIGEN3_VERSION_STRING: " ${EIGEN3_VERSION_STRING})
+	include_directories(${EIGEN3_INCLUDE_DIR})
+
+	add_executable(kalman_filter src/kalman_filter.cpp)
+	target_link_libraries(kalman_filter ${OpenCV_LIBS} )
+
+ENDIF()
+
+
+
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/src/sandbox.cpp")
     add_executable(sandbox src/sandbox.cpp)
