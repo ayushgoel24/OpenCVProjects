@@ -77,6 +77,8 @@ read more [here](https://ros-developer.com/2017/11/08/docker/)
    * [Visual Odometry](visual_odometry.md)  
    * [Ego Motion](docs/ego-motion.md)    
    * [Laser Triangulation](docs/laser_triangulation.md)    
+   * [Estate Estimation with Kalman Filter](docs/kalman_filter.md)    
+   
 
 # [OpenCV API](#)
    * [Basic Operations](src/basic_operations.cpp)    
@@ -119,7 +121,10 @@ read more [here](https://ros-developer.com/2017/11/08/docker/)
 - [Extracting scene-changing frames](docs/ffmpeg.md#extracting-scene-changing-frames)
 - [Rotating video](docs/ffmpeg.md#rotating-video)
 
+# [Virtual Camera](#)
+   * [Virtual Camera](scripts/virtual_camera.py)    
+
 # [Bundle adjustment and Structure from motion](#)
-- [Colmap](docs/colmap.md)
+- [Colmap](colmap/colmap.md)
 
 Refs: [1](https://www.youtube.com/channel/UCf0WB91t8Ky6AuYcQV0CcLw/videos),[2](https://github.com/spmallick/learnopencv/blob/master/README.md),[3](http://graphics.cs.cmu.edu/courses/15-463/),[4](https://www.tangramvision.com/blog/camera-modeling-exploring-distortion-and-distortion-models-part-i)  
