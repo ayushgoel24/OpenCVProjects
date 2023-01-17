@@ -31,7 +31,7 @@ We dot product both side by <img src="https://latex.codecogs.com/svg.image?O_L" 
 <img src="https://latex.codecogs.com/svg.image?O_L.(T\times&space;O_L)=O_L.(T\times&space;RO_R)&space;" title="https://latex.codecogs.com/svg.image?O_L.(T\times O_L)=O_L.(T\times RO_R) " />
 <br/>
 <br/>
-on the lhs, <img src="https://latex.codecogs.com/svg.image?O_L" title="https://latex.codecogs.com/svg.image?O_L" />   is perpendicular to <img src="https://latex.codecogs.com/svg.image?T\times&space;O_L &space;" title="https://latex.codecogs.com/svg.image?T\times O_L" />
+on the lhs, <img src="https://latex.codecogs.com/svg.image?O_L" title="https://latex.codecogs.com/svg.image?O_L" />   is perpendicular to <img src="https://latex.codecogs.com/svg.image?T\times&space;O_L" title="https://latex.codecogs.com/svg.image?T\times O_L" />
 so the result is zero vector, also we can write any cross product as skew-symmetric matrix multiplication, therefore:
 <br/>
 <br/>
