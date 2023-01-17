@@ -78,6 +78,10 @@ read more [here](https://ros-developer.com/2017/11/08/docker/)
    * [Ego Motion](docs/ego-motion.md)    
    * [Laser Triangulation](docs/laser_triangulation.md)    
    * [Estate Estimation with Kalman Filter](docs/kalman_filter.md)    
+   * [Bag of Words](docs/bag_of_words.md)    
+   * [Perspective-n-point](docs/perspective_n_point.md)    
+   * [Pose Estimation](docs/pose_estimation.md)       
+   * [SLAM Loop Closure](docs/slam_loop_closure.md)          
    
 
 # [OpenCV API](#)
@@ -109,6 +113,8 @@ read more [here](https://ros-developer.com/2017/11/08/docker/)
    * [ICP Iterative Closest Point](src/icp.cpp)    
    * [Structured Light Range Finding](src/structured_light_range_finding.cpp)    
    * [Estate Estimation with Kalman Filter](src/kalman_filter.cpp)    
+
+   
 
 # [FFmpeg Commands](#)
 - [Available encoders and decoders](docs/ffmpeg.md#available-encoders-and-decoders)
