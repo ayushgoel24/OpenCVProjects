@@ -112,7 +112,7 @@ Projection refers to the pinhole camera model, a camera matrix <img src="https:/
 
 <br/>
 <br/>
-<img src="https://latex.codecogs.com/svg.image?\text{Height&space;of&space;Sensor=10 mm}&space;" title="https://latex.codecogs.com/svg.image?\text{Height of Sensor=10 mm} " />
+<img src="https://latex.codecogs.com/svg.image?\text{Height%20of%20Sensor=10%20mm}" title="https://latex.codecogs.com/svg.image?\text{Height of Sensor=10 mm}" />
 
 <br/>
 <br/>
