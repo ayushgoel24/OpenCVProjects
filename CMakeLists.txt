@@ -53,6 +53,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 
 
@@ -86,11 +87,11 @@ if(${CERES_FOUND})
 	message("Ceres_VERSION: " ${Ceres_VERSION})
 	message("CERES_include_DIRS: " ${CERES_include_DIRS})
 	message("CERES_LIBRARIES: " ${CERES_LIBRARIES})
-	add_executable(bundle_adjuster_example1 src/bundle_adjuster_example1.cpp)
-	target_link_libraries(bundle_adjuster_example1  ${OpenCV_LIBS}  ${CERES_LIBRARIES})
+        #add_executable(bundle_adjuster_example1 src/bundle_adjuster_example1.cpp)
+        #target_link_libraries(bundle_adjuster_example1  ${OpenCV_LIBS}  ${CERES_LIBRARIES})
 
-	add_executable(bundle_adjuster_example2 src/bundle_adjuster_example2.cpp src/bal_problem.cpp)
-	target_link_libraries(bundle_adjuster_example2  ${OpenCV_LIBS}  ${CERES_LIBRARIES} gflags)
+        #add_executable(bundle_adjuster_example2 src/bundle_adjuster_example2.cpp src/bal_problem.cpp)
+        #target_link_libraries(bundle_adjuster_example2  ${OpenCV_LIBS}  ${CERES_LIBRARIES} gflags)
 else()  	
 	message("Ceres not found")
 endif()	

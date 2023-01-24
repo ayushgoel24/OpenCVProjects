@@ -218,13 +218,13 @@ void findFundamentalMatrix(std::vector<cv::Point2d>&imagePointsLeftCamera,std::v
     cv::Mat SigmaMatrix=cv::Mat::zeros(A.rows,A.cols,CV_64F);
     cv::SVD::compute(A.clone(), SingularValuesVector,U,VT);
 
-//////////////////////////////////Buliding U (Buliding Square Matrix U)///////////////////////////////////
+//////////////////////////////////Building U (Building Square Matrix U)///////////////////////////////////
 
     cv::Mat completeU=cv::Mat_<double>(U.rows,U.rows);
     cv::Mat missingElementsOfU=cv::Mat::zeros(U.rows,U.rows-U.cols,CV_64F);
     cv::hconcat(U,missingElementsOfU,completeU);
 
-//////////////////////////////////Buliding Sigma Matrix ///////////////////////////////////
+//////////////////////////////////Building Sigma Matrix ///////////////////////////////////
 
     cv::Mat completeSigma=cv::Mat::zeros(completeU.cols,VT.rows,CV_64F);
     for(std::size_t i=0;i<SingularValuesVector.rows;i++)
@@ -262,13 +262,13 @@ void findFundamentalMatrix(std::vector<cv::Point2d>&imagePointsLeftCamera,std::v
 ///////////////////////////////////Setting The Smallest Eigen Value to Zero/////////////////////////////////////////////
     SingularValuesVector.at<double>(SingularValuesVector.rows-1,0)=0;
 
-//////////////////////////////////Buliding U (Buliding Square Matrix U)///////////////////////////////////
+//////////////////////////////////Building U (Building Square Matrix U)///////////////////////////////////
 
     completeU=cv::Mat_<double>(U.rows,U.rows);
     missingElementsOfU=cv::Mat::zeros(U.rows,U.rows-U.cols,CV_64F);
     cv::hconcat(U,missingElementsOfU,completeU);
 
-//////////////////////////////////Buliding Sigma Matrix ///////////////////////////////////
+//////////////////////////////////Building Sigma Matrix ///////////////////////////////////
 
     completeSigma=cv::Mat::zeros(completeU.cols,VT.rows,CV_64F);
     for(std::size_t i=0;i<SingularValuesVector.rows;i++)

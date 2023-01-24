@@ -3,8 +3,15 @@
 If we have camera matrix we can compute the **ray** that goes the through optical center of <img src="https://latex.codecogs.com/svg.image?O_L" title="https://latex.codecogs.com/svg.image?O_L" /> (left cameras) and <img src="https://latex.codecogs.com/svg.image?O_R" title="https://latex.codecogs.com/svg.image?O_R" /> (right camera) and the point <img src="https://latex.codecogs.com/svg.image?X" title="https://latex.codecogs.com/svg.image?X" /> :
 
 
-
 <img src="images/TriangulationIdeal.svg" />  
+
+<br/>
+<br/>
+
+<img src="https://latex.codecogs.com/svg.image?\mathbf{y}_1=&space;\begin{bmatrix}y_1{_u}&space;\\y_1_{v}&space;\\1\end{bmatrix}," title="https://latex.codecogs.com/svg.image?\mathbf{y}_1= \begin{bmatrix}y_1{_u} \\y_1_{v} \\1\end{bmatrix}," />
+
+<img src="https://latex.codecogs.com/svg.image?\mathbf{y}_2=&space;\begin{bmatrix}y_2{_u}&space;\\y_2_{v}&space;\\1\end{bmatrix}" title="https://latex.codecogs.com/svg.image?\mathbf{y}_2= \begin{bmatrix}y_2{_u} \\y_2_{v} \\1\end{bmatrix}" />
+
 
 <br/>
 <br/>
@@ -18,14 +25,7 @@ If we have camera matrix we can compute the **ray** that goes the through optica
 <br/>
 
 
-<img src="https://latex.codecogs.com/svg.image?\mathbf{y}_1=&space;\begin{bmatrix}y_1{_u}&space;\\y_1_{v}&space;\\1\end{bmatrix}" title="https://latex.codecogs.com/svg.image?\mathbf{y}_1= \begin{bmatrix}y_1{_u} \\y_1_{v} \\1\end{bmatrix}" />
-<br/>
-<br/>
 
-<img src="https://latex.codecogs.com/svg.image?\mathbf{y}_2=&space;\begin{bmatrix}y_2{_u}&space;\\y_2_{v}&space;\\1\end{bmatrix}" title="https://latex.codecogs.com/svg.image?\mathbf{y}_2= \begin{bmatrix}y_2{_u} \\y_2_{v} \\1\end{bmatrix}" />
-
-<br/>
-<br/>
 
 
 Also from essential matrix we know:
