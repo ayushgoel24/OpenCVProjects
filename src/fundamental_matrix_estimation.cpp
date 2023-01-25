@@ -25,8 +25,8 @@ void estimateFundamentalMatrix()
 
     cv::Mat left_image, right_image,left_image_gray, right_image_gray ;
     std::string left_image_path, right_image_path;
-    left_image_path="../images/stereo_calibration/rect_left01.jpg";
-    right_image_path="../images/stereo_calibration/rect_right01.jpg";
+    left_image_path="../images/stereo_vision/left01.jpg";
+    right_image_path="../images/stereo_vision/right01.jpg";
 
     left_image=cv::imread(left_image_path);
     right_image=cv::imread(right_image_path);

@@ -79,8 +79,9 @@ cv::Mat rotationMatrixFromRollPitchYaw(double alpha, double beta,
   return R_z * R_y * R_x;
 }
 
-cv::Mat findFundamentalMatrix(std::vector<cv::Point2d> &imagePointsLeftCamera,
-                           std::vector<cv::Point2d> &imagePointsRightCamera) {
+cv::Mat
+findFundamentalMatrix(std::vector<cv::Point2d> &imagePointsLeftCamera,
+                      std::vector<cv::Point2d> &imagePointsRightCamera) {
   std::vector<cv::Point3d> imagePointsLeftCameraHomogeneous,
       imagePointsRightCameraHomogeneous;
   cv::convertPointsToHomogeneous(imagePointsLeftCamera,
@@ -185,15 +186,15 @@ cv::Mat findFundamentalMatrix(std::vector<cv::Point2d> &imagePointsLeftCamera,
   ///////////////// Building New F matrix /////////////////
 
   cv::Mat NewF = completeU * completeSigma * VT;
-//   std::cout << "Fundamental Matrix is:" << std::endl;
-//   std::cout << NewF << std::endl;
+  //   std::cout << "Fundamental Matrix is:" << std::endl;
+  //   std::cout << NewF << std::endl;
 
-//   cv::Ptr<cv::Formatter> formatMat =
-//       cv::Formatter::get(cv::Formatter::FMT_DEFAULT);
-//   formatMat->set64fPrecision(3);
-//   formatMat->set32fPrecision(3);
+  //   cv::Ptr<cv::Formatter> formatMat =
+  //       cv::Formatter::get(cv::Formatter::FMT_DEFAULT);
+  //   formatMat->set64fPrecision(3);
+  //   formatMat->set32fPrecision(3);
 
-//   std::cout << std::endl << formatMat->format(NewF) << std::endl;
+  //   std::cout << std::endl << formatMat->format(NewF) << std::endl;
 
   return NewF;
 }
@@ -416,8 +417,62 @@ void project3DPoint() {
              std::string("_.jpg");
   cv::imwrite(fileName, cameraImageLeft);
 
-  findFundamentalMatrix(projectedPointsInLeftCamera,
-                        projectedPointsInRightCamera);
+  cv::Mat fundamentalMatrix = findFundamentalMatrix(
+      projectedPointsInLeftCamera, projectedPointsInRightCamera);
+
+  std::vector<cv::Vec3d> leftLines, rightLines;
+  cv::computeCorrespondEpilines(projectedPointsInLeftCamera, 1,
+                                fundamentalMatrix, rightLines);
+  cv::computeCorrespondEpilines(projectedPointsInRightCamera, 2,
+                                fundamentalMatrix, leftLines);
+
+  cv::Mat imagePointLeftCameraMatrix = cv::Mat_<double>(3, 1);
+
+    cv::Mat leftImageRGB(cameraImageLeft.size(), CV_8UC3);
+    cv::cvtColor(cameraImageLeft, leftImageRGB, cv::COLOR_GRAY2RGB );
+	
+    cv::Mat rightImageRGB(cameraImageRight.size(), CV_8UC3);
+    cv::cvtColor(cameraImageRight, rightImageRGB, cv::COLOR_GRAY2RGB );
+
+
+
+  for (std::size_t i = 0; i < rightLines.size(); i = i + 1) {
+    cv::Vec3d l = rightLines.at(i);
+    double a = l.val[0];
+    double b = l.val[1];
+    double c = l.val[2];
+    std::cout << "a,b,c Using OpenCV (ax+by+c=0)" << std::endl;
+    std::cout << a << ", " << b << ", " << c << std::endl;
+    std::cout << "calculating a,b,c (ax+by+c=0) " << std::endl;
+
+    imagePointLeftCameraMatrix.at<double>(0, 0) =
+        projectedPointsInLeftCamera[i].x;
+    imagePointLeftCameraMatrix.at<double>(1, 0) =
+        projectedPointsInRightCamera[i].y;
+    imagePointLeftCameraMatrix.at<double>(2, 0) = 1;
+    cv::Mat rightLineMatrix = fundamentalMatrix * imagePointLeftCameraMatrix;
+
+    std::cout << rightLineMatrix.at<double>(0, 0) << ", "
+              << rightLineMatrix.at<double>(0, 1) << ", "
+              << rightLineMatrix.at<double>(0, 2) << std::endl;
+
+    //////////drawing the line on the image/////////////////
+    /*ax+by+c=0*/
+    double x0, y0, x1, y1;
+    x0 = 0;
+    y0 = (-c - a * x0) / b;
+    x1 = rightImageRGB.cols;
+    y1 = (-c - a * x1) / b;
+
+    std::cout << "error: "
+              << a * projectedPointsInRightCamera.at(i).x +
+                     b * projectedPointsInRightCamera.at(i).y + c
+              << std::endl;
+    cv::line(rightImageRGB, cv::Point(x0, y0), cv::Point(x1, y1),
+             cv::Scalar(0, 255, 0), 1);
+  }
+
+  cv::imwrite("rightImageRGB.jpg", rightImageRGB);
 }
 
 int main(int argc, char **argv11) { project3DPoint(); }

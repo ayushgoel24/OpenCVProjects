@@ -237,8 +237,8 @@ target_link_libraries(rodrigue_rotation_matrices ${OpenCV_LIBS} )
 add_executable(projection_camera_intrinsic src/projection_camera_intrinsic.cpp)
 target_link_libraries(projection_camera_intrinsic ${OpenCV_LIBS} pthread )
 
-add_executable(homography src/homography.cpp)
-target_link_libraries(homography ${OpenCV_LIBS} )
+#add_executable(homography src/homography.cpp)
+#target_link_libraries(homography ${OpenCV_LIBS} )
 
 add_executable(perspective_transformation src/perspective_transformation.cpp)
 target_link_libraries(perspective_transformation ${OpenCV_LIBS} )
