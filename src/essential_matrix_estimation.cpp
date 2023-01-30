@@ -1,4 +1,5 @@
 #include "csv.h"
+#include <iomanip>
 #include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>
 
@@ -199,6 +200,41 @@ findFundamentalMatrix(std::vector<cv::Point2d> &imagePointsLeftCamera,
   return NewF;
 }
 
+void verifyFundamentalMatrix(
+    std::vector<cv::Point2d> projectedPointsInLeftCamera,
+    std::vector<cv::Point2d> projectedPointsInRightCamera,
+    cv::Mat fundamentalMatrix) {
+
+  std::vector<cv::Point3d> projectedPointsInLeftCameraHomogeneous,
+      projectedPointsInRightCameraHomogeneous;
+
+  cv::convertPointsToHomogeneous(projectedPointsInLeftCamera,
+                                 projectedPointsInLeftCameraHomogeneous);
+  cv::convertPointsToHomogeneous(projectedPointsInRightCamera,
+                                 projectedPointsInRightCameraHomogeneous);
+
+  for (std::size_t i = 0; i < projectedPointsInLeftCameraHomogeneous.size();
+       i++) {
+    // std::cout<<"projectedPointsInLeftCameraHomogeneous: " <<p<<std::endl;
+
+    cv::Mat_<double> P_l(3 /*rows*/, 1 /* cols */);
+    cv::Mat_<double> P_r(3 /*rows*/, 1 /* cols */);
+
+    P_l(0, 0) = projectedPointsInLeftCameraHomogeneous[i].x;
+    P_l(1, 0) = projectedPointsInLeftCameraHomogeneous[i].y;
+    P_l(2, 0) = projectedPointsInLeftCameraHomogeneous[i].z;
+
+    P_r(0, 0) = projectedPointsInRightCameraHomogeneous[i].x;
+    P_r(1, 0) = projectedPointsInRightCameraHomogeneous[i].y;
+    P_r(2, 0) = projectedPointsInRightCameraHomogeneous[i].z;
+
+    std::cout << "P_l.t() * fundamentalMatrix * P_r"
+              << P_l.t() * fundamentalMatrix * P_r << std::endl;
+  }
+}
+
+void drawEpipolarLines() {}
+
 void project3DPoint() {
 
   /*
@@ -290,7 +326,8 @@ void project3DPoint() {
   ///////////////// camera intrinsic /////////////////
   int numberOfPixelInHeight, numberOfPixelInWidth;
   double heightOfSensor, widthOfSensor;
-  double focalLength = 0.1;
+  // double focalLength = 0.1;
+  double focalLength = 2.0;
   double mx, my, cx, cy;
 
   numberOfPixelInHeight = 480;
@@ -335,35 +372,72 @@ void project3DPoint() {
 
   */
 
-  cv::Mat leftCameraRotation = cv::Mat::eye(3, 3, CV_64FC1);
-  cv::Mat leftCameraTranslation = (cv::Mat_<double>(1, 3) << 0, 0, 0);
+  cv::Mat leftCameraRotation, rightCameraRotation;
+  double rollLeft, pitchLeft, yawLeft, rollRight, pitchRight, yawRight, txLeft,
+      tyLeft, tzLeft, txRight, tyRight, tzRight;
 
-  double alpha, beta, gamma;
+  cv::Vec3d thetaLeft, thetaRight;
 
-  alpha = 0;
-  // beta = -M_PI / 36;
-  beta = 0;
-  gamma = 0;
+  rollLeft = 0;
+  pitchLeft = +M_PI / 4;
+  yawLeft = 0;
 
-  cv::Mat rightCameraRotation =
-      rotationMatrixFromRollPitchYaw(alpha, beta, gamma);
-  cv::Mat rightCameraTranslation = (cv::Mat_<double>(1, 3) << 0.0, 0.0, 0.0);
+  rollRight = 0;
+  pitchRight = -M_PI / 4;
+  yawRight = 0;
+
+  txLeft = -0.5;
+  tyLeft = 0.0;
+  tzLeft = -4.0;
+
+  txRight = 0.5;
+  tyRight = 0.0;
+  tzRight = -4.0;
+
+  leftCameraRotation =
+      rotationMatrixFromRollPitchYaw(rollLeft, pitchLeft, yawLeft);
+  rightCameraRotation =
+      rotationMatrixFromRollPitchYaw(rollRight, pitchRight, yawRight);
+
+  cv::Mat leftCameraTranslation =
+      (cv::Mat_<double>(3, 1) << txLeft, tyLeft, tzLeft);
+  cv::Mat rightCameraTranslation =
+      (cv::Mat_<double>(3, 1) << txRight, tyRight, tzRight);
+
+  std::vector<cv::Point3d> objectPointsInWorldCoordinate;
+  double X, Y, Z, radius;
+
+  double phiStepSize, thetaStepSize;
+  phiStepSize = 0.7;
+  thetaStepSize = 0.6;
+
+  double a, b, c;
+  a = 2;
+  b = 3;
+  c = 1.6;
+  for (double phi = -M_PI; phi < M_PI; phi = phi + phiStepSize) {
+    for (double theta = -M_PI / 2; theta < M_PI / 2;
+         theta = theta + thetaStepSize) {
+      X = a * cos(theta) * cos(phi);
+      Y = b * cos(theta) * sin(phi);
+      Z = c * sin(theta);
+      objectPointsInWorldCoordinate.push_back(cv::Point3d(X, Y, Z));
+    }
+  }
 
   ///////////////// 3D points from world /////////////////
-
-  std::vector<cv::Point3d> objectPoints = readPoints("../data/points.csv");
 
   std::vector<cv::Point2d> projectedPointsInLeftCamera,
       projectedPointsInRightCamera;
 
   ///////////////// projecting 3D points into camera /////////////////
 
-  cv::projectPoints(objectPoints, leftCameraRotation, leftCameraTranslation,
-                    cameraMatrix, distortionCoefficient,
+  cv::projectPoints(objectPointsInWorldCoordinate, leftCameraRotation,
+                    leftCameraTranslation, cameraMatrix, distortionCoefficient,
                     projectedPointsInLeftCamera);
 
-  cv::projectPoints(objectPoints, rightCameraRotation, rightCameraTranslation,
-                    cameraMatrix, distortionCoefficient,
+  cv::projectPoints(objectPointsInWorldCoordinate, rightCameraRotation,
+                    rightCameraTranslation, cameraMatrix, distortionCoefficient,
                     projectedPointsInRightCamera);
 
   std::cout << "projected point in left camera" << std::endl;
@@ -401,12 +475,15 @@ void project3DPoint() {
 
   cv::Mat cameraImageLeft =
       cv::Mat::zeros(numberOfPixelInHeight, numberOfPixelInWidth, CV_8UC1);
+
   cv::line(cameraImageLeft, cv::Point2d(numberOfPixelInWidth / 2, 0),
            cv::Point2d(numberOfPixelInWidth / 2, numberOfPixelInHeight),
            cv::Scalar(255, 255, 255));
+
   cv::line(cameraImageLeft, cv::Point2d(0, numberOfPixelInHeight / 2),
            cv::Point2d(numberOfPixelInWidth, numberOfPixelInHeight / 2),
            cv::Scalar(255, 255, 255));
+
   for (std::size_t i = 0; i < projectedPointsInLeftCamera.size(); i++) {
     col = int(projectedPointsInLeftCamera.at(i).x);
     row = int(projectedPointsInLeftCamera.at(i).y);
@@ -420,59 +497,109 @@ void project3DPoint() {
   cv::Mat fundamentalMatrix = findFundamentalMatrix(
       projectedPointsInLeftCamera, projectedPointsInRightCamera);
 
+  std::cout << "Fundamental Matrix:\n"
+            << std::setprecision(3) << fundamentalMatrix << std::endl;
+
+  cv::Mat fundamentalMatrixOpenCV = cv::findFundamentalMat(
+      projectedPointsInLeftCamera, projectedPointsInRightCamera, cv::FM_8POINT);
+  std::cout << "Fundamental Matrix Using OpenCV:\n"
+            << std::setprecision(3) << fundamentalMatrixOpenCV << std::endl;
+
+  verifyFundamentalMatrix(projectedPointsInLeftCamera,
+                          projectedPointsInRightCamera,
+                          fundamentalMatrixOpenCV);
+
+  cv::Mat leftImageRGB(cameraImageLeft.size(), CV_8UC3);
+  cv::cvtColor(cameraImageLeft, leftImageRGB, cv::COLOR_GRAY2RGB);
+
+  cv::Mat rightImageRGB(cameraImageRight.size(), CV_8UC3);
+  cv::cvtColor(cameraImageRight, rightImageRGB, cv::COLOR_GRAY2RGB);
+  std::cout << "--------------------------" << std::endl;
+
+  // left image 1, right image 2
   std::vector<cv::Vec3d> leftLines, rightLines;
+
+  // Find epilines corresponding to points in left image (first image) and
+  // drawing its lines on right image
   cv::computeCorrespondEpilines(projectedPointsInLeftCamera, 1,
-                                fundamentalMatrix, rightLines);
+                                fundamentalMatrixOpenCV, rightLines);
+
+  // Find epilines corresponding to points in right image (second image) and
+  // drawing its lines on left image
   cv::computeCorrespondEpilines(projectedPointsInRightCamera, 2,
-                                fundamentalMatrix, leftLines);
+                                fundamentalMatrixOpenCV, leftLines);
 
-  cv::Mat imagePointLeftCameraMatrix = cv::Mat_<double>(3, 1);
+  //  // in order to multiply points by F we have store cv::Point3d in Matrix
+  //  form cv::Mat imagePointLeftCamInMatFrom = cv::Mat_<double>(3, 1); cv::Mat
+  //  imagePointRightCamInMatFrom = cv::Mat_<double>(3, 1);
 
-    cv::Mat leftImageRGB(cameraImageLeft.size(), CV_8UC3);
-    cv::cvtColor(cameraImageLeft, leftImageRGB, cv::COLOR_GRAY2RGB );
-	
-    cv::Mat rightImageRGB(cameraImageRight.size(), CV_8UC3);
-    cv::cvtColor(cameraImageRight, rightImageRGB, cv::COLOR_GRAY2RGB );
+  for (std::size_t i = 0; i < rightLines.size(); i++) {
 
+    std::cout << rightLines.at(i) << std::endl;
+    cv::Vec3f l = rightLines.at(i);
 
-
-  for (std::size_t i = 0; i < rightLines.size(); i = i + 1) {
-    cv::Vec3d l = rightLines.at(i);
     double a = l.val[0];
     double b = l.val[1];
     double c = l.val[2];
-    std::cout << "a,b,c Using OpenCV (ax+by+c=0)" << std::endl;
-    std::cout << a << ", " << b << ", " << c << std::endl;
-    std::cout << "calculating a,b,c (ax+by+c=0) " << std::endl;
 
-    imagePointLeftCameraMatrix.at<double>(0, 0) =
-        projectedPointsInLeftCamera[i].x;
-    imagePointLeftCameraMatrix.at<double>(1, 0) =
-        projectedPointsInRightCamera[i].y;
-    imagePointLeftCameraMatrix.at<double>(2, 0) = 1;
-    cv::Mat rightLineMatrix = fundamentalMatrix * imagePointLeftCameraMatrix;
-
-    std::cout << rightLineMatrix.at<double>(0, 0) << ", "
-              << rightLineMatrix.at<double>(0, 1) << ", "
-              << rightLineMatrix.at<double>(0, 2) << std::endl;
-
-    //////////drawing the line on the image/////////////////
     /*ax+by+c=0*/
     double x0, y0, x1, y1;
     x0 = 0;
     y0 = (-c - a * x0) / b;
+
+    std::cout << "x0: " << x0 << " y0: " << y0 << std::endl;
+
     x1 = rightImageRGB.cols;
     y1 = (-c - a * x1) / b;
+
+    std::cout << "x1: " << x1 << " y1: " << y1 << std::endl;
 
     std::cout << "error: "
               << a * projectedPointsInRightCamera.at(i).x +
                      b * projectedPointsInRightCamera.at(i).y + c
               << std::endl;
+
+    // cv::line(right_image, cvPoint(x0,y0),
+    // cvPoint(right_image.cols,right_image.rows), cvScalar(0,255,0), 1);
     cv::line(rightImageRGB, cv::Point(x0, y0), cv::Point(x1, y1),
              cv::Scalar(0, 255, 0), 1);
+    cv::imshow("right_image_epipolarline", rightImageRGB);
+    cv::waitKey(0);
   }
-
   cv::imwrite("rightImageRGB.jpg", rightImageRGB);
+
+  for (std::size_t i = 0; i < leftLines.size(); i++) {
+
+    std::cout << leftLines.at(i) << std::endl;
+    cv::Vec3f l = leftLines.at(i);
+
+    double a = l.val[0];
+    double b = l.val[1];
+    double c = l.val[2];
+
+    /*ax+by+c=0*/
+    double x0, y0, x1, y1;
+    x0 = 0;
+    y0 = (-c - a * x0) / b;
+
+    std::cout << "x0: " << x0 << " y0: " << y0 << std::endl;
+
+    x1 = leftImageRGB.cols;
+    y1 = (-c - a * x1) / b;
+
+    std::cout << "x1: " << x1 << " y1: " << y1 << std::endl;
+
+    std::cout << "error: "
+              << a * projectedPointsInLeftCamera.at(i).x +
+                     b * projectedPointsInLeftCamera.at(i).y + c
+              << std::endl;
+
+    cv::line(leftImageRGB, cv::Point(x0, y0), cv::Point(x1, y1),
+             cv::Scalar(0, 255, 0), 1);
+    cv::imshow("left_image_epipolarline", leftImageRGB);
+    cv::waitKey(0);
+  }
+  cv::imwrite("leftImageRGB.jpg", leftImageRGB);
 }
 
 int main(int argc, char **argv11) { project3DPoint(); }
