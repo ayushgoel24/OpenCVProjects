@@ -82,7 +82,7 @@ the above equation has zero on the rhs, so we can use SVD to solve it,
 <br/>
 
 
-<img src="https://latex.codecogs.com/svg.image?F^{*}&space;\underset{F}{\mathrm{argmin}}=&space;\|AF\|^{2}" title="https://latex.codecogs.com/svg.image?F^{*} \underset{H}{\mathrm{argmin}}= \|AF\|^{2}" />
+<img src="https://latex.codecogs.com/svg.image?F^{*}%20\underset{H}{\mathrm{argmin}}=%20\|AF\|^{2}" title="https://latex.codecogs.com/svg.image?F^{*} \underset{H}{\mathrm{argmin}}= \|AF\|^{2}" />
 
 
 
